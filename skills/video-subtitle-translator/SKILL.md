@@ -1,6 +1,12 @@
 ---
 name: video-subtitle-translator
 description: Transcribe local audio or video, translate timed subtitles, create SRT/VTT/ASS files, and export burned-in or selectable subtitle videos. Use for video translation, subtitle creation, caption generation, subtitle translation, SRT or VTT generation, hard subtitles, soft subtitle tracks, and CJK subtitle layout.
+compatibility: Requires Node.js 18+, FFmpeg/FFprobe for media processing, network access, and an authenticated OO CLI with Fusion ASR and LLM configuration.
+metadata:
+  icon: ':lucide:captions:'
+  title: Video Subtitle Translator
+  packageName: '@alwaysmavs/video-subtitle-translator'
+  version: 0.1.0
 ---
 
 # Video Subtitle Translator
