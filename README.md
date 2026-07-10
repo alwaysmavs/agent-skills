@@ -2,7 +2,7 @@
 
 **Languages:** English | [简体中文](README.zh-CN.md)
 
-A growing collection of reusable Agent Skills for practical SaaS workflows—from image generation and video creation to subtitling and automation.
+A growing collection of reusable Agent Skills for practical workflows—from image generation and video creation to subtitling, automation, and browser-native presentations.
 
 Each skill is a self-contained directory built around the open [`SKILL.md`](https://agentskills.io/specification) format. Copy or symlink the directory you need into an agent-compatible skills location, such as `.agents/skills/` in a repository or `~/.agents/skills/` for personal use.
 
@@ -18,10 +18,13 @@ The preview above is the Simplified Chinese version of the included [**Test Vide
 | --- | --- | --- |
 | [`video-subtitle-translator`](skills/video-subtitle-translator/) | [Built with oo CLI](https://oomol.com): Alibaba Qwen ASR transcription, timed subtitle generation, translation, CJK-aware layout, and hard or soft subtitle export. [English](skills/video-subtitle-translator/README.md) · [简体中文](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+, FFmpeg, [oo CLI](https://oomol.com), Fusion ASR, and OO LLM access |
 | [`mucha-gpt-image-studio`](skills/mucha-gpt-image-studio/) | Create original or photo-guided Alphonse Mucha-inspired Art Nouveau avatars, pet portraits, posters, menus, invitations, backgrounds, and wallpapers with GPT Image 2. [English](skills/mucha-gpt-image-studio/README.md) · [简体中文](skills/mucha-gpt-image-studio/README.zh-CN.md) | [oo CLI](https://oomol.com) and the `gpt-image-2` companion skill |
+| [`minimalist-html-ppt`](skills/minimalist-html-ppt/) | Create direct-open, single-file HTML PPTs for product and design reviews with quiet typography, deliberate whitespace, semantic motion, and a sensory observation-to-reframe workflow. | A modern browser; Node.js 18+ only for the optional validator |
 
 Read the [English](skills/video-subtitle-translator/README.md) or [简体中文](skills/video-subtitle-translator/README.zh-CN.md) overview for the workflow, formats, languages, and delivery options. The skill README contains the full multilingual documentation, including Japanese.
 
 Read the [Mucha Image Studio overview](skills/mucha-gpt-image-studio/README.md) for its two working modes, preservation guidance, supported asset types, and installation requirements.
+
+Use [minimalist-html-ppt](skills/minimalist-html-ppt/) when the deliverable should be a standalone, browser-playable HTML deck rather than a PPTX. It has no API, oo CLI, or build-step requirement.
 
 ## Add this skill to your agent
 
@@ -32,6 +35,12 @@ Install the video-subtitle-translator skill from https://github.com/alwaysmavs/a
 ```
 
 The skill is [built with oo CLI](https://oomol.com). Its `SKILL.md` contains the agent-facing prerequisites, data handling, workflow details, and output conventions.
+
+For a no-API HTML presentation skill, copy this request instead:
+
+~~~text
+Install the minimalist-html-ppt skill from https://github.com/alwaysmavs/agent-skills into my current agent's skills directory. Use its single-file HTML runtime to turn my outline into a browser-playable presentation. Preserve the built-in keyboard, wheel, touch, overview, and reduced-motion/static fallback behavior.
+~~~
 
 ## Contributing
 

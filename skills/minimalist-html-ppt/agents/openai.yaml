@@ -1,0 +1,4 @@
+interface:
+  display_name: "Minimalist HTML PPT"
+  short_description: "Create quiet, browser-native HTML presentation decks"
+  default_prompt: "Use $minimalist-html-ppt to turn my outline into a quiet, browser-playable HTML presentation deck."

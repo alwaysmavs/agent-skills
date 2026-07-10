@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4f1ea" />
+    <title>让空状态，先给用户一个可以开始的理由</title>
+    <style>
+      :root {
+        --ink: #302f2a;
+        --paper: #f4f1ea;
+        --paper-deep: #e6e0d6;
+        --fog: #d8d2c7;
+        --trace: #a86352;
+        --muted: #75736c;
+        --rule: rgba(48, 47, 42, .22);
+        --serif: "Noto Serif SC", "Songti SC", STSong, serif;
+        --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+        --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+      }
+
+      * { box-sizing: border-box; }
+      html { background: var(--paper); font-synthesis: none; }
+      body { margin: 0; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+      button { font: inherit; }
+
+      .webgl-field { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity .7s ease; }
+      .hero-active .webgl-field { opacity: 1; }
+      .static-field { position: fixed; z-index: 0; inset: 0; opacity: 0; pointer-events: none; background: radial-gradient(ellipse at 76% 38%, rgba(255,255,255,.94), transparent 20%), radial-gradient(ellipse at 28% 70%, rgba(168,99,82,.10), transparent 28%), linear-gradient(120deg, #e3ddd2, #f4f1ea 56%, #d9d2c7); }
+      .no-motion .webgl-field { opacity: 0; }
+      .no-motion .static-field { opacity: 1; }
+
+      #deck { position: relative; z-index: 1; display: flex; width: 700vw; height: 100vh; transition: transform .72s cubic-bezier(.76,0,.24,1); }
+      .slide { position: relative; width: 100vw; height: 100vh; min-width: 100vw; overflow: hidden; background: var(--paper); }
+      .slide::after { position: absolute; inset: 0; pointer-events: none; content: ""; opacity: .10; background-image: radial-gradient(rgba(48,47,42,.45) .4px, transparent .5px); background-size: 5px 5px; mix-blend-mode: multiply; }
+      .slide--hero { background: transparent; }
+      .slide--hero::after { opacity: .08; }
+
+      .shell { position: relative; z-index: 1; display: grid; width: 100%; height: 100%; padding: 5.6vh 6.7vw 4.6vh; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 1.45vw; }
+      .meta { display: flex; grid-column: 1 / -1; grid-row: 1; align-items: flex-start; justify-content: space-between; font-family: var(--mono); font-size: clamp(10px, .78vw, 15px); letter-spacing: .04em; line-height: 1.35; }
+      .meta__left { display: flex; align-items: baseline; gap: 1.5em; }
+      .meta__tag, .eyebrow, .hero-kicker { color: var(--trace); }
+      .meta__right, .foot { color: var(--muted); }
+      .foot { display: flex; grid-column: 1 / -1; grid-row: 3; align-items: flex-end; justify-content: space-between; font-family: var(--mono); font-size: clamp(9px, .67vw, 13px); letter-spacing: .04em; line-height: 1.35; }
+      h1, h2, h3, p { margin-top: 0; }
+      .eyebrow, .hero-kicker { margin: 0 0 2.3vh; font-family: var(--mono); font-size: clamp(10px, .82vw, 16px); letter-spacing: .10em; }
+
+      .hero-copy { grid-column: 1 / span 9; grid-row: 2; align-self: center; padding: 0 0 2vh 1vw; }
+      h1 { max-width: 10em; margin-bottom: 3.4vh; font-family: var(--serif); font-size: clamp(54px, 7.1vw, 136px); font-weight: 500; letter-spacing: -.07em; line-height: 1.02; }
+      .hero-copy > p:last-child { max-width: 31em; margin: 0; color: rgba(48,47,42,.72); font-size: clamp(16px, 1.3vw, 25px); line-height: 1.68; }
+      .paper-window { position: absolute; right: 10vw; bottom: 14vh; width: min(25vw, 470px); aspect-ratio: 1.35; border: 1px solid rgba(48,47,42,.16); background: rgba(255,255,255,.15); box-shadow: 25px 32px 52px rgba(58,50,40,.12); transform: rotate(3deg); }
+      .paper-window::before, .paper-window::after { position: absolute; border: 1px solid rgba(48,47,42,.17); border-radius: 50%; content: ""; }
+      .paper-window::before { top: 25%; left: 24%; width: 18%; aspect-ratio: 1; }
+      .paper-window::after { right: 17%; bottom: 19%; width: 7%; aspect-ratio: 1; }
+      .paper-window i { position: absolute; top: 13%; right: 11%; width: 6px; aspect-ratio: 1; border-radius: 50%; background: var(--trace); }
+      .hero-index { position: absolute; right: 7.7vw; bottom: 7.2vh; display: grid; place-items: center; width: min(10vw, 164px); aspect-ratio: 1; border: 1px solid rgba(48,47,42,.28); border-radius: 50%; color: var(--trace); font-family: var(--mono); font-size: clamp(13px, 1.1vw, 21px); }
+      .hero-index::before { position: absolute; inset: 17%; border: 1px dashed rgba(48,47,42,.22); border-radius: 50%; content: ""; }
+
+      .moment { grid-column: 2 / span 9; grid-row: 2; align-self: center; padding-bottom: 2vh; }
+      .moment h2, .reframe h2, .closing h2 { margin-bottom: 3.3vh; font-family: var(--serif); font-size: clamp(48px, 6.15vw, 118px); font-weight: 500; letter-spacing: -.07em; line-height: 1.1; }
+      .moment > p:last-child { max-width: 32em; margin: 0; color: var(--muted); font-size: clamp(16px, 1.3vw, 25px); line-height: 1.68; }
+      .time-mark { position: absolute; right: 23vw; bottom: 20vh; width: 1px; height: 19vh; background: var(--trace); transform: rotate(21deg); }
+      .time-mark::before { position: absolute; top: -5px; left: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--trace); content: ""; }
+
+      .detail { grid-column: 1 / -1; grid-row: 2; align-self: center; display: flex; align-items: center; gap: 8vw; padding: 0 8vw; }
+      .detail-observation { width: 44%; }
+      .detail h2 { max-width: 6.4em; margin-bottom: 3.2vh; font-family: var(--serif); font-size: clamp(47px, 5.7vw, 110px); font-weight: 500; letter-spacing: -.07em; line-height: 1.12; }
+      .detail p:last-child { max-width: 25em; margin: 0; color: var(--muted); font-size: clamp(16px, 1.18vw, 23px); line-height: 1.68; }
+      .cursor-field { position: relative; width: min(29vw, 560px); height: min(29vw, 560px); border: 1px solid var(--rule); border-radius: 50%; }
+      .cursor-field::before { position: absolute; top: 18%; left: 48%; width: 1px; height: 59%; background: var(--trace); transform: rotate(28deg); transform-origin: top; content: ""; }
+      .cursor-field::after { position: absolute; top: 17%; left: 47.5%; width: 9px; height: 9px; border-radius: 50%; background: var(--trace); content: ""; }
+      .cursor-field span { position: absolute; right: 8%; bottom: 13%; color: var(--muted); font-family: var(--mono); font-size: clamp(10px,.78vw,15px); letter-spacing: .06em; }
+
+      .reframe { grid-column: 1 / -1; grid-row: 2; align-self: center; text-align: center; }
+      .reframe h2 { max-width: 9.6em; margin: 0 auto; font-size: clamp(52px, 6.8vw, 130px); line-height: 1.15; }
+      .reframe .eyebrow { margin-bottom: 3.1vh; }
+      .reframe-note { width: 9px; height: 9px; margin: 7vh auto 0; border-radius: 50%; background: var(--trace); box-shadow: 0 0 0 18px rgba(168,99,82,.06); }
+
+      .proposal { grid-column: 1 / -1; grid-row: 2; align-self: center; display: flex; align-items: center; gap: 7vw; padding: 0 5vw 0 2vw; }
+      .proposal-copy { width: 47%; }
+      .proposal h2 { max-width: 8em; margin-bottom: 3vh; font-family: var(--serif); font-size: clamp(41px, 4.75vw, 91px); font-weight: 500; letter-spacing: -.065em; line-height: 1.16; }
+      .proposal-copy > p:last-child { max-width: 26em; margin: 0; color: var(--muted); font-size: clamp(16px,1.16vw,22px); line-height: 1.68; }
+      .app-window { position: relative; width: min(34vw, 650px); aspect-ratio: 1.28; border: 1px solid rgba(48,47,42,.18); border-radius: 16px; background: rgba(255,255,255,.48); box-shadow: 22px 28px 48px rgba(58,50,40,.11); }
+      .app-window__bar { height: 11%; border-bottom: 1px solid rgba(48,47,42,.12); background: rgba(231,225,215,.62); border-radius: 16px 16px 0 0; }
+      .app-welcome { position: absolute; top: 22%; right: 13%; left: 13%; text-align: center; }
+      .app-welcome i { display: block; width: clamp(28px,2.2vw,44px); aspect-ratio: 1; margin: 0 auto 2.2vh; border: 1px solid var(--trace); border-radius: 50%; box-shadow: 0 0 0 13px rgba(168,99,82,.06); }
+      .app-welcome small, .app-welcome strong, .app-welcome span { display: block; }
+      .app-welcome small { margin-bottom: 1.3vh; color: var(--muted); font-size: clamp(10px,.78vw,15px); }
+      .app-welcome strong { font-family: var(--serif); font-size: clamp(22px,2vw,39px); font-weight: 500; letter-spacing: -.045em; }
+      .app-welcome p { margin: 1.6vh auto 2.2vh; color: var(--muted); font-size: clamp(11px,.9vw,17px); line-height: 1.6; }
+      .app-welcome b { display: inline-block; border-radius: 24px; padding: .9em 1.7em; background: var(--ink); color: var(--paper); font-size: clamp(11px,.85vw,16px); font-weight: 500; }
+      .app-welcome span { margin-top: 1.4vh; color: var(--trace); font-size: clamp(10px,.76vw,14px); }
+
+      .choice { grid-column: 1 / -1; grid-row: 2; align-self: center; display: flex; align-items: flex-start; gap: 9vw; padding: 0 8vw; }
+      .choice article { width: 38%; min-height: 39vh; padding-top: 2.8vh; border-top: 1px solid var(--rule); }
+      .choice article:last-child { border-top: 2px solid var(--trace); }
+      .choice small { color: var(--trace); font-family: var(--mono); font-size: clamp(10px,.8vw,15px); letter-spacing: .09em; }
+      .choice h3 { max-width: 7.2em; margin: 3.5vh 0 2.8vh; font-family: var(--serif); font-size: clamp(30px,3.35vw,64px); font-weight: 500; letter-spacing: -.06em; line-height: 1.23; }
+      .choice p { max-width: 17em; margin: 0; color: var(--muted); font-size: clamp(15px,1.1vw,21px); line-height: 1.68; }
+
+      .validate { grid-column: 2 / span 10; grid-row: 2; align-self: center; }
+      .validate h2 { max-width: 8em; margin-bottom: 7vh; font-family: var(--serif); font-size: clamp(48px,5.8vw,111px); font-weight: 500; letter-spacing: -.07em; line-height: 1.13; }
+      .path { display: flex; align-items: center; gap: 2.5vw; margin-bottom: 4.8vh; }
+      .path strong { font-family: var(--serif); font-size: clamp(34px,3.3vw,63px); font-weight: 500; letter-spacing: -.06em; }
+      .path i { color: var(--trace); font-family: var(--serif); font-size: clamp(26px,2.4vw,46px); font-style: normal; }
+      .validate > p:last-child { max-width: 35em; margin: 0; color: var(--muted); font-size: clamp(15px,1.12vw,22px); line-height: 1.68; }
+
+      .closing { grid-column: 2 / span 10; grid-row: 2; align-self: center; }
+      .closing h2 { max-width: 9em; margin-bottom: 3.2vh; }
+      .closing > p:last-child { max-width: 28em; margin: 0; color: rgba(48,47,42,.7); font-size: clamp(16px,1.2vw,23px); line-height: 1.68; }
+      .close-sign { position: absolute; right: 9vw; bottom: 16vh; display: grid; place-items: center; width: min(11vw,210px); aspect-ratio: 1; border: 1px solid rgba(48,47,42,.25); border-radius: 50%; color: var(--trace); font-family: var(--mono); font-size: clamp(10px,.8vw,15px); letter-spacing: .08em; transform: rotate(9deg); }
+
+      .controls { position: fixed; z-index: 5; right: 2.1vw; top: 50%; display: grid; gap: 9px; transform: translateY(-50%); }
+      .controls button { width: 8px; height: 8px; border: 1px solid rgba(48,47,42,.45); border-radius: 50%; padding: 0; background: transparent; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+      .controls button[aria-current="true"] { border-color: var(--trace); background: var(--trace); transform: scale(1.45); }
+      .hint { position: fixed; z-index: 5; right: 2vw; bottom: 2.3vh; color: rgba(48,47,42,.55); font-family: var(--mono); font-size: 10px; letter-spacing: .04em; }
+      .overview { position: fixed; z-index: 8; inset: 0; display: none; padding: 6vh 6.7vw; background: rgba(244,241,234,.96); color: var(--ink); }
+      .overview.is-open { display: block; }
+      .overview h2 { margin-bottom: 4vh; font-family: var(--serif); font-size: clamp(36px,4vw,76px); font-weight: 500; letter-spacing: -.06em; }
+      .overview__list { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(48,47,42,.18); }
+      .overview__list button { min-height: 18vh; border: 0; padding: 2vh 1.6vw; background: var(--paper); color: var(--ink); text-align: left; cursor: pointer; }
+      .overview__list small { display: block; margin-bottom: 2vh; color: var(--trace); font-family: var(--mono); }
+      .overview__list strong { display: block; font-family: var(--serif); font-size: clamp(20px,1.75vw,34px); font-weight: 500; line-height: 1.25; }
+
+      @media (max-width: 760px) {
+        .shell { padding: 5vh 7vw 4vh; }
+        .hero-copy, .moment, .validate, .closing { grid-column: 1 / -1; padding-left: 0; }
+        .paper-window, .hero-index, .time-mark, .close-sign { display: none; }
+        .detail, .proposal, .choice { padding-left: 0; padding-right: 0; gap: 4vw; }
+        .cursor-field { width: 31vw; height: 31vw; }
+        .proposal { gap: 4vw; }
+        .app-window { width: 45vw; }
+        .choice { gap: 5vw; }
+        .choice article { width: 47%; }
+        .controls, .hint { display: none; }
+      }
+
+      @media (prefers-reduced-motion: reduce) { #deck, .webgl-field, .controls button { transition: none !important; } }
+    </style>
+  </head>
+  <body class="hero-active">
+    <canvas class="webgl-field" aria-hidden="true"></canvas>
+    <div class="static-field" aria-hidden="true"></div>
+    <main id="deck" aria-label="产品设计评审：新用户空状态">
+      <section class="slide slide--hero" data-hero="true" data-sensory-task="让观众进入新用户面对空白工作台时安静却无从开始的状态" data-motion-intent="用纸面上缓慢散开的光影表现注意力尚未聚焦的状态，而非制造装饰性背景" aria-label="第 1 页：决策摘要">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">PRODUCT DESIGN REVIEW</span><span>01 / 07</span></div><span class="meta__right">NEW USER WORKSPACE</span></header>
+          <div class="hero-copy"><p class="hero-kicker">THE FIRST MOMENT OF ORIENTATION</p><h1>让空状态，<br>先给用户一个<br>可以开始的理由。</h1><p>新用户第一次打开工作台，遇见的不是“没有内容”，而是产品是否理解自己下一步要做什么。</p></div>
+          <div class="paper-window" aria-hidden="true"><i></i></div><div class="hero-index">01</div>
+          <footer class="foot"><span>← → / 滚轮 / 触摸切页</span><span>B 切换静态背景</span></footer>
+        </div>
+      </section>
+
+      <section class="slide" data-sensory-task="让团队具体看见用户在空状态前短暂停顿的时刻" aria-label="第 2 页：用户时刻">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">ORDINARY OBSERVATION</span><span>02 / 07</span></div><span class="meta__right">09:17 · FIRST OPEN</span></header>
+          <div class="moment"><p class="eyebrow">THE MOMENT BEFORE ACTION</p><h2>她打开工作台，<br>却不知道第一步<br>应该是什么。</h2><p>没有项目、没有成员、没有历史记录。页面很安静；但此刻用户真正需要的，不是更多选择，而是一个可以开始的理由。</p></div><div class="time-mark" aria-hidden="true"></div>
+          <footer class="foot"><span>用户目标：创建并推进第一个项目</span><span>观察具体时刻，而非罗列功能</span></footer>
+        </div>
+      </section>
+
+      <section class="slide" data-sensory-task="把用户未能行动的细节收束为可被团队感知的一次悬停" aria-label="第 3 页：被忽略的细节">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">SMALL DETAIL</span><span>03 / 07</span></div><span class="meta__right">CURSOR WITHOUT A DESTINATION</span></header>
+          <div class="detail"><div class="detail-observation"><p class="eyebrow">A TINY PAUSE</p><h2>鼠标停住，<br>不是因为页面简洁。</h2><p>而是因为用户尚未判断：这里是让我创建项目，还是等待别人把我加进来。空白把解释成本留给了用户。</p></div><div class="cursor-field" aria-hidden="true"><span>WAITING FOR A DIRECTION</span></div></div>
+          <footer class="foot"><span>感知资源：停顿 / 不确定</span><span>一个细节，比一个抽象问题更可讨论</span></footer>
+        </div>
+      </section>
+
+      <section class="slide" data-sensory-task="重新命名空状态，使后续界面取舍有一个共同的体验原则" aria-label="第 4 页：重新命名">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">REFRAME</span><span>04 / 07</span></div><span class="meta__right">FROM ABSENCE TO ORIENTATION</span></header>
+          <div class="reframe"><p class="eyebrow">THE DESIGN PRINCIPLE</p><h2>空状态不是没有内容。<br>它是用户第一次判断<br>产品是否理解我的地方。</h2><div class="reframe-note" aria-hidden="true"></div></div>
+          <footer class="foot"><span>先建立方向感，再要求行动</span><span>重新命名，而非追加解释</span></footer>
+        </div>
+      </section>
+
+      <section class="slide" data-sensory-task="展示一个能够给予方向感且不要求用户先学习系统的起点" aria-label="第 5 页：方案状态">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">PROPOSED STATE</span><span>05 / 07</span></div><span class="meta__right">ONE CLEAR FIRST ACTION</span></header>
+          <div class="proposal"><div class="proposal-copy"><p class="eyebrow">THE FIRST INVITATION</p><h2>先给一个能完成的动作，<br>再展开完整的工作台。</h2><p>默认推荐“创建第一个项目”，并保留“加入已有项目”的次级入口。用户不需要先理解系统，才有资格开始。</p></div><div class="app-window" aria-label="空状态界面示意"><div class="app-window__bar"></div><div class="app-welcome"><i></i><small>你好，Lin</small><strong>从第一个项目开始</strong><p>创建一个项目，把想法、任务与协作放在一起。</p><b>创建项目</b><span>加入已有项目</span></div></div></div>
+          <footer class="foot"><span>一张界面，只回答一个体验问题</span><span>方案状态</span></footer>
+        </div>
+      </section>
+
+      <section class="slide" data-sensory-task="将被选择与被放弃的方案并置，帮助团队看见体验取舍" aria-label="第 6 页：方案取舍">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">TRADE-OFF</span><span>06 / 07</span></div><span class="meta__right">MAKE THE CHOICE VISIBLE</span></header>
+          <div class="choice"><article><small>不选择</small><h3>只显示空白与一个“新建”按钮</h3><p>界面很轻，但把“我应该做什么”的解释成本完全留给用户。</p></article><article><small>选择</small><h3>用一个明确起点，解释下一步的价值</h3><p>增加少量引导，但降低首次任务的犹豫与误解。</p></article></div>
+          <footer class="foot"><span>取舍应被写出来，不应隐藏在设计稿里</span><span>方案选择</span></footer>
+        </div>
+      </section>
+
+      <section class="slide slide--hero" data-hero="true" data-sensory-task="在结束时把设计决策落回可验证的用户行为，并留下安静的下一步" data-motion-intent="让纸面光影回到低频且近乎静止的状态，表现方向已被给出而非制造结束高潮" aria-label="第 7 页：验证与下一步">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">VALIDATE THE MOMENT</span><span>07 / 07</span></div><span class="meta__right">NEXT, NOT A PROMISE</span></header>
+          <div class="closing"><p class="hero-kicker">FROM EXPERIENCE TO BEHAVIOR</p><h2>确认用户能自然开始，<br>再进入开发。</h2><p>下一步制作可点击原型，观察用户是否能理解自己的第一步；再以项目创建率、首次任务完成率与“我知道下一步做什么”的测试反馈，验证这个体验原则。</p></div><div class="close-sign">TEST<br>THE<br>MOMENT</div>
+          <footer class="foot"><span>体验变化 → 首个动作 → 首次完成</span><span>07</span></footer>
+        </div>
+      </section>
+    </main>
+    <nav class="controls" aria-label="页码导航"></nav><p class="hint">ESC 索引 · B 静态模式</p>
+    <aside class="overview" aria-label="页面索引"><h2>索引</h2><div class="overview__list"></div></aside>
+    <script>
+      const slides = [...document.querySelectorAll('.slide')];
+      const deck = document.querySelector('#deck');
+      const dots = document.querySelector('.controls');
+      const overview = document.querySelector('.overview');
+      const overviewList = document.querySelector('.overview__list');
+      let current = 0, wheelLock = false, touchStart = 0, staticMode = matchMedia('(prefers-reduced-motion: reduce)').matches, renderCanvas = () => {};
+      const labels = ['封面', '用户时刻', '被忽略的细节', '重新命名', '方案状态', '方案取舍', '验证与下一步'];
+      const total = String(slides.length).padStart(2, '0');
+      slides.forEach((slide, index) => {
+        const dot = document.createElement('button'); dot.type = 'button'; dot.ariaLabel = `跳到第 ${index + 1} 页`; dot.addEventListener('click', () => show(index)); dots.append(dot);
+        const item = document.createElement('button'); item.type = 'button'; item.innerHTML = `<small>${String(index + 1).padStart(2, '0')} / ${total}</small><strong>${labels[index]}</strong>`; item.addEventListener('click', () => { overview.classList.remove('is-open'); show(index); }); overviewList.append(item);
+      });
+      function show(index) { current = Math.max(0, Math.min(index, slides.length - 1)); deck.style.transform = `translateX(${-current * 100}vw)`; slides.forEach((slide, i) => slide.setAttribute('aria-current', i === current ? 'page' : 'false')); [...dots.children].forEach((dot, i) => dot.setAttribute('aria-current', String(i === current))); const hero = slides[current].dataset.hero === 'true'; document.body.classList.toggle('hero-active', hero); history.replaceState(null, '', `#${current + 1}`); }
+      function move(delta) { show(current + delta); }
+      addEventListener('keydown', event => { if (event.key === 'ArrowRight' || event.key === ' ') move(1); if (event.key === 'ArrowLeft') move(-1); if (event.key === 'Escape') overview.classList.toggle('is-open'); if (event.key.toLowerCase() === 'b') { staticMode = !staticMode; document.body.classList.toggle('no-motion', staticMode); if (!staticMode) renderCanvas(performance.now()); } });
+      addEventListener('wheel', event => { if (wheelLock || Math.abs(event.deltaY) < 24) return; wheelLock = true; move(event.deltaY > 0 ? 1 : -1); setTimeout(() => wheelLock = false, 780); }, { passive: true });
+      addEventListener('touchstart', event => touchStart = event.changedTouches[0].screenX, { passive: true }); addEventListener('touchend', event => { const delta = event.changedTouches[0].screenX - touchStart; if (Math.abs(delta) > 48) move(delta < 0 ? 1 : -1); }, { passive: true });
+      const initial = Number(location.hash.slice(1)) - 1; show(Number.isInteger(initial) ? initial : 0); document.body.classList.toggle('no-motion', staticMode);
+      const canvas = document.querySelector('.webgl-field'); const gl = canvas.getContext('webgl', { alpha: false, antialias: false });
+      if (gl) {
+        const vert = 'attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}';
+        const frag = 'precision mediump float; uniform vec2 r; uniform float t; void main(){vec2 uv=gl_FragCoord.xy/r; vec2 p=(uv-.5)*2.; float wave=sin(p.x*1.25+t*.045)+sin(p.y*1.05-t*.032)+sin((p.x-p.y)*1.4+t*.025); float soft=smoothstep(-1.35,1.75,wave); vec3 shadow=vec3(.76,.73,.67); vec3 paper=vec3(.95,.94,.90); vec3 light=vec3(1.0,.995,.97); vec3 trace=vec3(.66,.39,.32); vec3 col=mix(shadow,paper,soft*.72); col=mix(col,light,smoothstep(.72,1.85,wave)*.35); col=mix(col,trace,smoothstep(2.0,2.72,wave)*.10); gl_FragColor=vec4(col,1.);}';
+        const compile = (type, source) => { const shader = gl.createShader(type); gl.shaderSource(shader, source); gl.compileShader(shader); return shader; }; const program = gl.createProgram(); gl.attachShader(program, compile(gl.VERTEX_SHADER, vert)); gl.attachShader(program, compile(gl.FRAGMENT_SHADER, frag)); gl.linkProgram(program); gl.useProgram(program); const buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW); const pos = gl.getAttribLocation(program,'p'); gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0); const res = gl.getUniformLocation(program,'r'); const time = gl.getUniformLocation(program,'t');
+        function render(ms) { const dpr = Math.min(devicePixelRatio, 1.5); const w = innerWidth*dpr, h = innerHeight*dpr; if(canvas.width!==w || canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);} gl.uniform2f(res,w,h); gl.uniform1f(time,ms*.001); gl.drawArrays(gl.TRIANGLES,0,6); if(!staticMode) requestAnimationFrame(render); }
+        renderCanvas = render; requestAnimationFrame(render);
+      } else { document.body.classList.add('no-motion'); }
+    </script>
+  </body>
+</html>

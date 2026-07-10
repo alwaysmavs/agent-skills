@@ -9,6 +9,15 @@ permissions:
   contents: read
 
 jobs:
+  minimalist-html-ppt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate the bundled template
+        run: node skills/minimalist-html-ppt/scripts/check-editorial-deck.mjs skills/minimalist-html-ppt/assets/editorial-web-deck/template.html
   video-subtitle-translator:
     runs-on: ubuntu-latest
     steps:
