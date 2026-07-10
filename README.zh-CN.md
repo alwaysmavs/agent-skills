@@ -12,7 +12,7 @@
 
 ![简体中文字幕烧录预览](skills/video-subtitle-translator/examples/test-video-zh-preview.gif)
 
-上方预览来自仓库中附带的 [**Test Video** 示例视频](skills/video-subtitle-translator/examples/test-video-zh-burned.mp4)：英文讲话先被转写，再翻译为简体中文，最后直接烧录进画面。
+上方预览是仓库中附带的 [**Test Video** 简体中文版](skills/video-subtitle-translator/examples/test-video-zh-burned.mp4)：英文讲话先被转写，再翻译为简体中文，最后烧录进独立的视频文件。skill 页面还提供了独立的[英文、简体中文和日文字幕示例](skills/video-subtitle-translator/README.zh-CN.md#查看多语言效果)。
 
 | Skill | 能力简介 | 环境要求 |
 | --- | --- | --- |

@@ -8,11 +8,27 @@
 
 `video-subtitle-translator` 是一个[基于 oo CLI 构建](https://oomol.com) 的 Agent Skill，可将本地音频或视频转为带时间轴的字幕、翻译后的字幕文件、烧录字幕 MP4，或带可选字幕轨的视频。它将阿里 Qwen ASR 转写与确定性的字幕处理结合起来，输出的是可以直接交付的字幕和成片，而不仅是一段没有时间信息的逐字稿。
 
-## 查看效果
+## 查看多语言效果
 
-![Test Video：英文语音已翻译并烧录为简体中文字幕](examples/test-video-zh-preview.gif)
+以下版本都使用相同的英文原始视频，但每种语言都对应一个独立的烧录字幕视频。每段预览与其对应的完整 MP4 使用完全相同的字幕语言。
 
-此预览来自 [**Test Video** — 下载或播放完整烧录字幕 MP4](examples/test-video-zh-burned.mp4)。原始语音为英语；最终视频使用自然、底部居中、黑色描边的简体中文字幕。
+### 英文字幕
+
+![Test Video：烧录英文字幕](examples/test-video-en-preview.gif)
+
+[下载或播放完整英文字幕视频](examples/test-video-en-burned.mp4)。
+
+### 简体中文字幕
+
+![Test Video：烧录简体中文字幕](examples/test-video-zh-preview.gif)
+
+[下载或播放完整简体中文字幕视频](examples/test-video-zh-burned.mp4)。
+
+### 日文字幕
+
+![Test Video：烧录日文字幕](examples/test-video-ja-preview.gif)
+
+[下载或播放完整日文字幕视频](examples/test-video-ja-burned.mp4)。
 
 ## 核心能力
 
@@ -58,11 +74,12 @@ Alibaba Qwen ASR 支持自动识别语言，也可指定源语言。当前工作
 
 面向 Agent 的实现说明、环境要求、具体命令、数据处理和恢复步骤请阅读 [SKILL.md](SKILL.md)。该 skill 使用 [oo CLI](https://oomol.com)，并需要 Node.js 18+、FFmpeg/FFprobe、Fusion API 权限和 OO LLM 配置。
 
-## 附带示例
+## 附带示例资源
 
-| 资源 | 说明 |
-| --- | --- |
-| [`test-video-zh-burned.mp4`](examples/test-video-zh-burned.mp4) | 完整 2 分 46 秒示例，已永久烧录简体中文字幕；MP4 标题元数据为 `Test Video`。 |
-| [`test-video-zh-preview.gif`](examples/test-video-zh-preview.gif) | 自动播放的短预览，同时用于本页和仓库首页。 |
+| 字幕语言 | 自动播放预览 | 完整烧录字幕视频 |
+| --- | --- | --- |
+| 英文 | [`test-video-en-preview.gif`](examples/test-video-en-preview.gif) | [`test-video-en-burned.mp4`](examples/test-video-en-burned.mp4) |
+| 简体中文 | [`test-video-zh-preview.gif`](examples/test-video-zh-preview.gif) | [`test-video-zh-burned.mp4`](examples/test-video-zh-burned.mp4) |
+| 日文 | [`test-video-ja-preview.gif`](examples/test-video-ja-preview.gif) | [`test-video-ja-burned.mp4`](examples/test-video-ja-burned.mp4) |
 
-示例仅用于展示字幕生成效果；仓库不会提交原始逐字稿、API Key、上传媒体地址或中间任务数据。
+每个视频时长均为 2 分 46 秒，字幕已永久烧录。示例仅用于展示字幕生成效果；仓库不会提交原始逐字稿、API Key、上传媒体地址或中间任务数据。

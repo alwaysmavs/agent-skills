@@ -8,11 +8,27 @@
 
 `video-subtitle-translator` is an Agent Skill [built with oo CLI](https://oomol.com) for turning local audio and video into timed captions, translated subtitle files, hard-subtitled MP4s, or videos with selectable subtitle tracks. It combines Alibaba Qwen ASR transcription with deterministic subtitle processing, so the output is ready for sharing rather than a loose block of transcript text.
 
-## See the result
+## See the results
 
-![Test Video: English speech translated and burned in as Simplified Chinese subtitles](examples/test-video-zh-preview.gif)
+Each version below uses the same English-language source video, but has its own corresponding subtitle language burned directly into the frames. The preview and full MP4 in each section always match.
 
-This preview comes from [**Test Video** — download or play the complete burned-in MP4](examples/test-video-zh-burned.mp4). The source is English; the finished video has natural, bottom-centered Simplified Chinese subtitles with a high-contrast outline.
+### English subtitles
+
+![Test Video with English subtitles](examples/test-video-en-preview.gif)
+
+[Download or play the complete English-subtitled video](examples/test-video-en-burned.mp4).
+
+### Simplified Chinese subtitles
+
+![Test Video with Simplified Chinese subtitles](examples/test-video-zh-preview.gif)
+
+[Download or play the complete Simplified Chinese-subtitled video](examples/test-video-zh-burned.mp4).
+
+### Japanese subtitles
+
+![Test Video with Japanese subtitles](examples/test-video-ja-preview.gif)
+
+[Download or play the complete Japanese-subtitled video](examples/test-video-ja-burned.mp4).
 
 ## What it does
 
@@ -58,11 +74,12 @@ Install the video-subtitle-translator skill from https://github.com/alwaysmavs/a
 
 The implementation guide for agents, including setup, commands, data handling, and recovery steps, is in [SKILL.md](SKILL.md). It uses [oo CLI](https://oomol.com) and requires Node.js 18+, FFmpeg/FFprobe, Fusion API access, and an OO LLM configuration.
 
-## Included demo
+## Included demo assets
 
-| Asset | Details |
-| --- | --- |
-| [`test-video-zh-burned.mp4`](examples/test-video-zh-burned.mp4) | Complete 2:46 demo video with Simplified Chinese subtitles permanently burned in; MP4 title metadata: `Test Video`. |
-| [`test-video-zh-preview.gif`](examples/test-video-zh-preview.gif) | Short, autoplaying preview used in this page and the repository home page. |
+| Subtitle language | Autoplay preview | Complete burned-in video |
+| --- | --- | --- |
+| English | [`test-video-en-preview.gif`](examples/test-video-en-preview.gif) | [`test-video-en-burned.mp4`](examples/test-video-en-burned.mp4) |
+| Simplified Chinese | [`test-video-zh-preview.gif`](examples/test-video-zh-preview.gif) | [`test-video-zh-burned.mp4`](examples/test-video-zh-burned.mp4) |
+| Japanese | [`test-video-ja-preview.gif`](examples/test-video-ja-preview.gif) | [`test-video-ja-burned.mp4`](examples/test-video-ja-burned.mp4) |
 
-The demo is included solely to show the generated subtitle result. No raw transcript, API key, uploaded-media URL, or intermediate job data is committed.
+Every video is 2:46 long and has subtitles permanently burned in. The demo is included solely to show the generated subtitle result. No raw transcript, API key, uploaded-media URL, or intermediate job data is committed.

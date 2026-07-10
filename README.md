@@ -12,7 +12,7 @@ Turn a local audio or video file into polished, timed subtitles—and deliver it
 
 ![Chinese burned-in subtitle preview](skills/video-subtitle-translator/examples/test-video-zh-preview.gif)
 
-The preview above is taken from the included [**Test Video** demo](skills/video-subtitle-translator/examples/test-video-zh-burned.mp4): English speech transcribed, translated to Simplified Chinese, and burned into the video.
+The preview above is the Simplified Chinese version of the included [**Test Video** demo](skills/video-subtitle-translator/examples/test-video-zh-burned.mp4): English speech transcribed, translated to Simplified Chinese, and burned into its own video. The skill page also includes separate [English, Simplified Chinese, and Japanese subtitle demos](skills/video-subtitle-translator/README.md#see-the-results).
 
 | Skill | What it does | Requirements |
 | --- | --- | --- |
