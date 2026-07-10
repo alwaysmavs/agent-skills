@@ -13,6 +13,36 @@ art-direction decisions in one focused skill while delegating generation,
 editing, upload, recovery, and artifact download to the companion
 `gpt-image-2` skill.
 
+## See the visual directions
+
+These four generated examples show the kinds of finished artwork this skill is
+designed to make. They are representative creative directions, not source
+templates: users can substitute their own subject, palette, copy, or reference
+photo while keeping the same Art Nouveau art direction.
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <a href="examples/mucha-corgi-poster.png"><img src="examples/mucha-corgi-poster.png" alt="A floral Alphonse Mucha-inspired corgi poster" width="100%"></a><br>
+      <strong>Floral corgi poster</strong>
+    </td>
+    <td width="50%" align="center">
+      <a href="examples/mucha-jiangnan-portrait.png"><img src="examples/mucha-jiangnan-portrait.png" alt="A Jiangnan woman in an Art Nouveau portrait" width="100%"></a><br>
+      <strong>Jiangnan portrait</strong>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <a href="examples/mucha-tea-menu-frame.png"><img src="examples/mucha-tea-menu-frame.png" alt="A decorative Art Nouveau tea menu frame" width="100%"></a><br>
+      <strong>Decorative menu frame</strong>
+    </td>
+    <td width="50%" align="center">
+      <a href="examples/mucha-huizhou-architecture.png"><img src="examples/mucha-huizhou-architecture.png" alt="Traditional Huizhou architecture in a Mucha-inspired landscape" width="100%"></a><br>
+      <strong>Huizhou architecture</strong>
+    </td>
+  </tr>
+</table>
+
 ## What it does
 
 ### 1. Creates original Art Nouveau images from a written brief
