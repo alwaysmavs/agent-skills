@@ -16,19 +16,19 @@ The preview above is taken from the included [**Test Video** demo](skills/video-
 
 | Skill | What it does | Requirements |
 | --- | --- | --- |
-| [`video-subtitle-translator`](skills/video-subtitle-translator/) | Alibaba Qwen ASR transcription, timed subtitle generation, translation, CJK-aware layout, and hard or soft subtitle export. [English overview](skills/video-subtitle-translator/README.md) · [中文说明](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+, FFmpeg, OO CLI, Fusion ASR, and OO LLM access |
+| [`video-subtitle-translator`](skills/video-subtitle-translator/) | [Built with oo CLI](https://oomol.com): Alibaba Qwen ASR transcription, timed subtitle generation, translation, CJK-aware layout, and hard or soft subtitle export. [English overview](skills/video-subtitle-translator/README.md) · [中文说明](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+, FFmpeg, [oo CLI](https://oomol.com), Fusion ASR, and OO LLM access |
 
 Read the [English video subtitle translator overview](skills/video-subtitle-translator/README.md) or the [简体中文说明](skills/video-subtitle-translator/README.zh-CN.md) for the workflow, formats, languages, and delivery options.
 
-## Install a skill locally
+## Add this skill to your agent
 
-```bash
-git clone https://github.com/alwaysmavs/agent-skills.git
-mkdir -p .agents/skills
-cp -R agent-skills/skills/video-subtitle-translator .agents/skills/
+No terminal commands to memorize. Copy this request to your agent:
+
+```text
+Install the video-subtitle-translator skill from https://github.com/alwaysmavs/agent-skills into my current agent's skills directory. Follow its SKILL.md instructions. Check that Node.js 18+, FFmpeg/FFprobe, and an authenticated oo CLI with Fusion ASR and OO LLM access are available. If something is missing, tell me exactly what I need to set up; otherwise confirm that the skill is ready to use.
 ```
 
-Restart or reload your agent after installing a skill. See the skill's `SKILL.md` for the agent-facing prerequisites, data handling, workflow details, and output conventions.
+The skill is [built with oo CLI](https://oomol.com). Its `SKILL.md` contains the agent-facing prerequisites, data handling, workflow details, and output conventions.
 
 ## Contributing
 

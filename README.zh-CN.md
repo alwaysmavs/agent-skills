@@ -16,19 +16,19 @@
 
 | Skill | 能力简介 | 环境要求 |
 | --- | --- | --- |
-| [`video-subtitle-translator`](skills/video-subtitle-translator/) | 使用阿里 Qwen ASR 转写，生成带时间轴的字幕、翻译、优化中日韩字幕换行，并导出硬字幕或软字幕。 [English](skills/video-subtitle-translator/README.md) · [中文说明](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+、FFmpeg、OO CLI、Fusion ASR 与 OO LLM 权限 |
+| [`video-subtitle-translator`](skills/video-subtitle-translator/) | [基于 oo CLI 构建](https://oomol.com)：使用阿里 Qwen ASR 转写，生成带时间轴的字幕、翻译、优化中日韩字幕换行，并导出硬字幕或软字幕。 [English](skills/video-subtitle-translator/README.md) · [中文说明](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+、FFmpeg、[oo CLI](https://oomol.com)、Fusion ASR 与 OO LLM 权限 |
 
 查看 [视频字幕生成器中文说明](skills/video-subtitle-translator/README.zh-CN.md)，或阅读 [English overview](skills/video-subtitle-translator/README.md)，了解完整流程、支持语言、格式和交付方式。
 
-## 在本地安装 skill
+## 让你的 Agent 安装 skill
 
-```bash
-git clone https://github.com/alwaysmavs/agent-skills.git
-mkdir -p .agents/skills
-cp -R agent-skills/skills/video-subtitle-translator .agents/skills/
+无需记忆终端命令。将以下提示词直接复制给你的 Agent：
+
+```text
+请将 https://github.com/alwaysmavs/agent-skills 中的 video-subtitle-translator skill 安装到我当前 Agent 的 skills 目录，并遵循该 skill 的 SKILL.md 说明。请检查 Node.js 18+、FFmpeg/FFprobe，以及已认证且具备 Fusion ASR 和 OO LLM 权限的 oo CLI 是否可用；如有缺失，请明确告诉我需要完成哪些配置；如果环境已就绪，请确认该 skill 可以使用。
 ```
 
-安装后请重启或重新加载 Agent。面向 Agent 的前置条件、数据处理、具体命令和输出约定请参阅对应 skill 的 `SKILL.md`。
+该 skill [基于 oo CLI 构建](https://oomol.com)。面向 Agent 的前置条件、数据处理、具体命令和输出约定请参阅对应 skill 的 `SKILL.md`。
 
 ## 参与贡献
 

@@ -6,7 +6,7 @@
 
 **让任何视频拥有自然、清晰、便于观看的字幕，并按受众所需格式直接交付。**
 
-`video-subtitle-translator` 是一个由 OO 驱动的 Agent Skill，可将本地音频或视频转为带时间轴的字幕、翻译后的字幕文件、烧录字幕 MP4，或带可选字幕轨的视频。它将阿里 Qwen ASR 转写与确定性的字幕处理结合起来，输出的是可以直接交付的字幕和成片，而不仅是一段没有时间信息的逐字稿。
+`video-subtitle-translator` 是一个[基于 oo CLI 构建](https://oomol.com) 的 Agent Skill，可将本地音频或视频转为带时间轴的字幕、翻译后的字幕文件、烧录字幕 MP4，或带可选字幕轨的视频。它将阿里 Qwen ASR 转写与确定性的字幕处理结合起来，输出的是可以直接交付的字幕和成片，而不仅是一段没有时间信息的逐字稿。
 
 ## 查看效果
 
@@ -48,15 +48,15 @@ Alibaba Qwen ASR 支持自动识别语言，也可指定源语言。当前工作
 | 剪辑软件或平台需要单独字幕文件 | SRT 或 VTT |
 | 需要一致的字体、描边和位置 | ASS 外挂字幕或带 ASS 的 MKV |
 
-## 安装
+## 让 Agent 安装
 
-```bash
-git clone https://github.com/alwaysmavs/agent-skills.git
-mkdir -p .agents/skills
-cp -R agent-skills/skills/video-subtitle-translator .agents/skills/
+无需运行终端命令。将以下提示词直接复制给你的 Agent：
+
+```text
+请将 https://github.com/alwaysmavs/agent-skills 中的 video-subtitle-translator skill 安装到我当前 Agent 的 skills 目录，并遵循该 skill 的 SKILL.md 说明。请检查 Node.js 18+、FFmpeg/FFprobe，以及已认证且具备 Fusion ASR 和 OO LLM 权限的 oo CLI 是否可用；如有缺失，请明确告诉我需要完成哪些配置；如果环境已就绪，请确认该 skill 可以使用。
 ```
 
-面向 Agent 的实现说明、环境要求、具体命令、数据处理和恢复步骤请阅读 [SKILL.md](SKILL.md)。该 skill 需要 Node.js 18+、FFmpeg/FFprobe、已认证的 `oo` CLI、Fusion API 权限和 OO LLM 配置。
+面向 Agent 的实现说明、环境要求、具体命令、数据处理和恢复步骤请阅读 [SKILL.md](SKILL.md)。该 skill 使用 [oo CLI](https://oomol.com)，并需要 Node.js 18+、FFmpeg/FFprobe、Fusion API 权限和 OO LLM 配置。
 
 ## 附带示例
 

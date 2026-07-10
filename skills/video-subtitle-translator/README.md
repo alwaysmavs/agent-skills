@@ -6,7 +6,7 @@
 
 **Give any video readable, natural subtitles—then export exactly the format your audience needs.**
 
-`video-subtitle-translator` is an OO-powered Agent Skill for turning local audio and video into timed captions, translated subtitle files, hard-subtitled MP4s, or videos with selectable subtitle tracks. It combines Alibaba Qwen ASR transcription with deterministic subtitle processing, so the output is ready for sharing rather than a loose block of transcript text.
+`video-subtitle-translator` is an Agent Skill [built with oo CLI](https://oomol.com) for turning local audio and video into timed captions, translated subtitle files, hard-subtitled MP4s, or videos with selectable subtitle tracks. It combines Alibaba Qwen ASR transcription with deterministic subtitle processing, so the output is ready for sharing rather than a loose block of transcript text.
 
 ## See the result
 
@@ -48,15 +48,15 @@ Alibaba Qwen ASR supports automatic detection or an explicit source language. Th
 | A video editor or platform needs a subtitle file | SRT or VTT |
 | Matching typography and placement matter | ASS sidecar or styled MKV |
 
-## Install
+## Add it to your agent
 
-```bash
-git clone https://github.com/alwaysmavs/agent-skills.git
-mkdir -p .agents/skills
-cp -R agent-skills/skills/video-subtitle-translator .agents/skills/
+Copy this request to your agent—no terminal commands required:
+
+```text
+Install the video-subtitle-translator skill from https://github.com/alwaysmavs/agent-skills into my current agent's skills directory. Follow its SKILL.md instructions. Check that Node.js 18+, FFmpeg/FFprobe, and an authenticated oo CLI with Fusion ASR and OO LLM access are available. If something is missing, tell me exactly what I need to set up; otherwise confirm that the skill is ready to use.
 ```
 
-The implementation guide for agents, including setup, commands, data handling, and recovery steps, is in [SKILL.md](SKILL.md). It requires Node.js 18+, FFmpeg/FFprobe, an authenticated `oo` CLI, Fusion API access, and an OO LLM configuration.
+The implementation guide for agents, including setup, commands, data handling, and recovery steps, is in [SKILL.md](SKILL.md). It uses [oo CLI](https://oomol.com) and requires Node.js 18+, FFmpeg/FFprobe, Fusion API access, and an OO LLM configuration.
 
 ## Included demo
 
