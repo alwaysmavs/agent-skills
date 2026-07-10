@@ -2,7 +2,7 @@
 
 **言語：** [English](README.md) | [简体中文](README.zh-CN.md) | 日本語
 
-**リポジトリ：** [All skills](../../README.md) | [すべてのスキル（簡体中文）](../../README.zh-CN.md) | [すべてのスキル（日本語）](../../README.ja.md)
+**リポジトリ：** [All skills](../../README.md) | [すべてのスキル（簡体中文）](../../README.zh-CN.md)
 
 **どんな動画にも自然で読みやすい字幕を付け、視聴者に合った形式で書き出します。**
 
