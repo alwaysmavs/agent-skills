@@ -1,6 +1,6 @@
 # Agent Skills
 
-**Languages:** English | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
+**Languages:** English | [简体中文](README.zh-CN.md)
 
 A growing collection of reusable Agent Skills for practical SaaS workflows—from image generation and video creation to subtitling and automation.
 
@@ -12,13 +12,13 @@ Turn a local audio or video file into polished, timed subtitles—and deliver it
 
 ![Chinese burned-in subtitle preview](skills/video-subtitle-translator/examples/test-video-zh-preview.gif)
 
-The preview above is the Simplified Chinese version of the included [**Test Video** demo](skills/video-subtitle-translator/examples/test-video-zh-burned.mp4): English speech transcribed, translated to Simplified Chinese, and burned into its own video. The skill page also includes separate [English, Simplified Chinese, and Japanese subtitle demos](skills/video-subtitle-translator/README.md#see-the-results).
+The preview above is the Simplified Chinese version of the included [**Test Video** demo](skills/video-subtitle-translator/examples/test-video-zh-burned.mp4): English speech transcribed, translated to Simplified Chinese, and burned into its own video. Its multilingual subtitle demonstrations live in the [video subtitle translator README](skills/video-subtitle-translator/README.md).
 
 | Skill | What it does | Requirements |
 | --- | --- | --- |
-| [`video-subtitle-translator`](skills/video-subtitle-translator/) | [Built with oo CLI](https://oomol.com): Alibaba Qwen ASR transcription, timed subtitle generation, translation, CJK-aware layout, and hard or soft subtitle export. [English](skills/video-subtitle-translator/README.md) · [简体中文](skills/video-subtitle-translator/README.zh-CN.md) · [日本語](skills/video-subtitle-translator/README.ja.md) | Node.js 18+, FFmpeg, [oo CLI](https://oomol.com), Fusion ASR, and OO LLM access |
+| [`video-subtitle-translator`](skills/video-subtitle-translator/) | [Built with oo CLI](https://oomol.com): Alibaba Qwen ASR transcription, timed subtitle generation, translation, CJK-aware layout, and hard or soft subtitle export. [English](skills/video-subtitle-translator/README.md) · [简体中文](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+, FFmpeg, [oo CLI](https://oomol.com), Fusion ASR, and OO LLM access |
 
-Read the [English](skills/video-subtitle-translator/README.md), [简体中文](skills/video-subtitle-translator/README.zh-CN.md), or [日本語](skills/video-subtitle-translator/README.ja.md) video subtitle translator overview for the workflow, formats, languages, and delivery options.
+Read the [English](skills/video-subtitle-translator/README.md) or [简体中文](skills/video-subtitle-translator/README.zh-CN.md) overview for the workflow, formats, languages, and delivery options. The skill README contains the full multilingual documentation, including Japanese.
 
 ## Add this skill to your agent
 
