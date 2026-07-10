@@ -1,0 +1,33 @@
+{
+  "data": {
+    "transcription": {
+      "transcripts": [
+        {
+          "text": "Hello world. This is a test.",
+          "sentences": [
+            {
+              "beginTime": 0,
+              "endTime": 850,
+              "text": "Hello world.",
+              "words": [
+                { "beginTime": 0, "endTime": 300, "text": "Hello" },
+                { "beginTime": 360, "endTime": 850, "text": "world", "punctuation": "." }
+              ]
+            },
+            {
+              "beginTime": 1600,
+              "endTime": 2600,
+              "text": "This is a test.",
+              "words": [
+                { "beginTime": 1600, "endTime": 1800, "text": "This" },
+                { "beginTime": 1840, "endTime": 1980, "text": "is" },
+                { "beginTime": 2020, "endTime": 2100, "text": "a" },
+                { "beginTime": 2160, "endTime": 2600, "text": "test", "punctuation": "." }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

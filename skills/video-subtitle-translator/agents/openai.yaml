@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video Subtitle Translator"
+  short_description: "Transcribe, translate, and render video subtitles"
+  default_prompt: "Use $video-subtitle-translator to transcribe, translate, and subtitle this media file."

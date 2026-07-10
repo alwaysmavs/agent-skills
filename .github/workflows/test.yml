@@ -1,0 +1,22 @@
+name: Test skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  video-subtitle-translator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Check script syntax
+        run: node --check skills/video-subtitle-translator/scripts/subtitle-tools.mjs
+      - name: Run tests
+        run: node --test skills/video-subtitle-translator/tests/*.test.mjs

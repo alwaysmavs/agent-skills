@@ -1,0 +1,13 @@
+{
+  "name": "@alwaysmavs/video-subtitle-translator-skill",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "check": "node --check scripts/subtitle-tools.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
