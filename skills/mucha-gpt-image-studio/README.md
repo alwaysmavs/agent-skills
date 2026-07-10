@@ -33,8 +33,8 @@ photo while keeping the same Art Nouveau art direction.
   </tr>
   <tr>
     <td width="50%" align="center">
-      <a href="examples/mucha-tea-menu-frame.png"><img src="examples/mucha-tea-menu-frame.png" alt="A decorative Art Nouveau tea menu frame" width="100%"></a><br>
-      <strong>Decorative menu frame</strong>
+      <a href="examples/mucha-huaiyang-menu.png"><img src="examples/mucha-huaiyang-menu.png" alt="A Huaiyang cuisine menu in an Art Nouveau style" width="100%"></a><br>
+      <strong>Huaiyang cuisine menu</strong>
     </td>
     <td width="50%" align="center">
       <a href="examples/mucha-huizhou-architecture.png"><img src="examples/mucha-huizhou-architecture.png" alt="Traditional Huizhou architecture in a Mucha-inspired landscape" width="100%"></a><br>

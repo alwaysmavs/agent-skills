@@ -25,8 +25,8 @@
   </tr>
   <tr>
     <td width="50%" align="center">
-      <a href="examples/mucha-tea-menu-frame.png"><img src="examples/mucha-tea-menu-frame.png" alt="穆夏风茶菜单装饰框" width="100%"></a><br>
-      <strong>茶菜单装饰框</strong>
+      <a href="examples/mucha-huaiyang-menu.png"><img src="examples/mucha-huaiyang-menu.png" alt="穆夏风淮扬菜菜单" width="100%"></a><br>
+      <strong>淮扬雅宴菜单</strong>
     </td>
     <td width="50%" align="center">
       <a href="examples/mucha-huizhou-architecture.png"><img src="examples/mucha-huizhou-architecture.png" alt="穆夏风徽派建筑风景" width="100%"></a><br>
