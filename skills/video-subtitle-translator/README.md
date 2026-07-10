@@ -1,8 +1,8 @@
 # Video Subtitle Translator
 
-**Languages:** English | [简体中文](README.zh-CN.md)
+**Languages:** English | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
 
-**Repository:** [All skills](../../README.md) | [全部技能（中文）](../../README.zh-CN.md)
+**Repository:** [All skills](../../README.md) | [全部技能（中文）](../../README.zh-CN.md) | [すべてのスキル（日本語）](../../README.ja.md)
 
 **Give any video readable, natural subtitles—then export exactly the format your audience needs.**
 

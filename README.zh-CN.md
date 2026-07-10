@@ -1,6 +1,6 @@
 # Agent Skills
 
-**语言：** [English](README.md) | 简体中文
+**语言：** [English](README.md) | 简体中文 | [日本語](README.ja.md)
 
 一组可复用的 Agent Skills，面向图像生成、视频制作、字幕、自动化等实用 SaaS 工作流。
 
@@ -16,9 +16,9 @@
 
 | Skill | 能力简介 | 环境要求 |
 | --- | --- | --- |
-| [`video-subtitle-translator`](skills/video-subtitle-translator/) | [基于 oo CLI 构建](https://oomol.com)：使用阿里 Qwen ASR 转写，生成带时间轴的字幕、翻译、优化中日韩字幕换行，并导出硬字幕或软字幕。 [English](skills/video-subtitle-translator/README.md) · [中文说明](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+、FFmpeg、[oo CLI](https://oomol.com)、Fusion ASR 与 OO LLM 权限 |
+| [`video-subtitle-translator`](skills/video-subtitle-translator/) | [基于 oo CLI 构建](https://oomol.com)：使用阿里 Qwen ASR 转写，生成带时间轴的字幕、翻译、优化中日韩字幕换行，并导出硬字幕或软字幕。 [English](skills/video-subtitle-translator/README.md) · [简体中文](skills/video-subtitle-translator/README.zh-CN.md) · [日本語](skills/video-subtitle-translator/README.ja.md) | Node.js 18+、FFmpeg、[oo CLI](https://oomol.com)、Fusion ASR 与 OO LLM 权限 |
 
-查看 [视频字幕生成器中文说明](skills/video-subtitle-translator/README.zh-CN.md)，或阅读 [English overview](skills/video-subtitle-translator/README.md)，了解完整流程、支持语言、格式和交付方式。
+查看 [视频字幕生成器中文说明](skills/video-subtitle-translator/README.zh-CN.md)，或阅读 [English overview](skills/video-subtitle-translator/README.md) 和 [日本語の説明](skills/video-subtitle-translator/README.ja.md)，了解完整流程、支持语言、格式和交付方式。
 
 ## 让你的 Agent 安装 skill
 
