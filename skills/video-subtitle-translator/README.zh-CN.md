@@ -1,8 +1,8 @@
 # 视频字幕生成器
 
-**语言：** [English](README.md) | 简体中文
+**语言：** [English](README.md) | 简体中文 | [日本語](README.ja.md)
 
-**仓库导航：** [全部 skills（English）](../../README.md) | [全部 skills（中文）](../../README.zh-CN.md)
+**仓库导航：** [全部 skills（English）](../../README.md) | [全部 skills（中文）](../../README.zh-CN.md) | [全部 skills（日文）](../../README.ja.md)
 
 **让任何视频拥有自然、清晰、便于观看的字幕，并按受众所需格式直接交付。**
 
