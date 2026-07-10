@@ -1,14 +1,18 @@
 # Video Subtitle Translator
 
+**Languages:** English | [简体中文](README.zh-CN.md)
+
+**Repository:** [All skills](../../README.md) | [全部技能（中文）](../../README.zh-CN.md)
+
 **Give any video readable, natural subtitles—then export exactly the format your audience needs.**
 
 `video-subtitle-translator` is an OO-powered Agent Skill for turning local audio and video into timed captions, translated subtitle files, hard-subtitled MP4s, or videos with selectable subtitle tracks. It combines Alibaba Qwen ASR transcription with deterministic subtitle processing, so the output is ready for sharing rather than a loose block of transcript text.
 
 ## See the result
 
-![测试视频：英文语音已翻译并烧录为简体中文字幕](examples/测试视频.中文字幕预览.gif)
+![Test Video: English speech translated and burned in as Simplified Chinese subtitles](examples/test-video-zh-preview.gif)
 
-This preview comes from [**测试视频** — download or play the complete burned-in MP4](examples/测试视频.中文字幕烧录版.mp4). The source is English; the finished video has natural, bottom-centered Simplified Chinese subtitles with a high-contrast outline.
+This preview comes from [**Test Video** — download or play the complete burned-in MP4](examples/test-video-zh-burned.mp4). The source is English; the finished video has natural, bottom-centered Simplified Chinese subtitles with a high-contrast outline.
 
 ## What it does
 
@@ -58,7 +62,7 @@ The implementation guide for agents, including setup, commands, data handling, a
 
 | Asset | Details |
 | --- | --- |
-| [`测试视频.中文字幕烧录版.mp4`](examples/测试视频.中文字幕烧录版.mp4) | Complete 2:46 demo video with Simplified Chinese subtitles permanently burned in; MP4 title metadata: `测试视频`. |
-| [`测试视频.中文字幕预览.gif`](examples/测试视频.中文字幕预览.gif) | Short, autoplaying preview used in this page and the repository home page. |
+| [`test-video-zh-burned.mp4`](examples/test-video-zh-burned.mp4) | Complete 2:46 demo video with Simplified Chinese subtitles permanently burned in; MP4 title metadata: `Test Video`. |
+| [`test-video-zh-preview.gif`](examples/test-video-zh-preview.gif) | Short, autoplaying preview used in this page and the repository home page. |
 
 The demo is included solely to show the generated subtitle result. No raw transcript, API key, uploaded-media URL, or intermediate job data is committed.
