@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mucha Image Studio"
+  short_description: "Create Mucha-inspired Art Nouveau images with GPT Image 2"
+  default_prompt: "Use $mucha-gpt-image-studio to create an Alphonse Mucha-inspired image from my brief or supplied photo."
