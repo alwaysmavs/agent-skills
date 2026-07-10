@@ -1,7 +1,7 @@
 ---
 name: mucha-gpt-image-studio
 description: Create original or reference-guided GPT Image 2 artwork in an Alphonse Mucha-inspired Art Nouveau aesthetic. Use when the user asks for a Mucha-style avatar, pet portrait, menu, poster, invitation, social background, wallpaper, or decorative image, including transforming a supplied person, pet, or object photo while preserving its recognizable features.
-compatibility: Requires the oo CLI, network access, and the installed gpt-image-2 companion skill.
+compatibility: Requires network access. On first use, install and authenticate the oo CLI, then install the gpt-image-2 companion skill through oo.
 metadata:
   icon: ':lucide:palette:'
   title: Mucha Image Studio
@@ -21,6 +21,57 @@ brief. Use reference-guided editing when the user supplies a readable person,
 pet, object, or product image, or asks to preserve a subject. This is a
 stylistic transformation, not a guarantee of exact identity, measurements, fit,
 or print reproduction.
+
+## First-run setup
+
+Make the environment ready before collecting a brief or starting a generation.
+Run this setup in sequence and, after every successful step, continue the
+original image request automatically. Do not make the user choose from a setup
+menu or ask them to find a provider, API key, or companion package themselves.
+
+1. Check whether the OO CLI is available:
+
+   ```bash
+   oo --version
+   ```
+
+   If it prints a version, continue. If the command is missing, install it for
+   the current platform, then repeat `oo --version`:
+
+   ```bash
+   curl -fsSL https://cli.oomol.com/install.sh | bash    # macOS / Linux
+   ```
+
+   ```powershell
+   irm https://cli.oomol.com/install.ps1 | iex           # Windows PowerShell
+   ```
+
+   ```cmd
+   curl -fsSL https://cli.oomol.com/install.cmd -o install.cmd && install.cmd && del install.cmd
+   ```
+
+   If installation changes `PATH`, start a fresh shell before retrying. Use the
+   [OO CLI install guide](https://cli.oomol.com/install-guide.md) as the source
+   of truth for these commands.
+
+2. Ensure OO is authenticated. If the first OO command reports that the user
+   is not logged in, run `oo login` and let the user complete its secure login
+   flow. Do not put session tokens, API keys, or account credentials in prompts,
+   files, command history, or source control.
+
+3. Ensure the `gpt-image-2` companion skill is installed in the active agent
+   skills directory. If it is absent, install the published companion directly
+   through OO:
+
+   ```bash
+   oo skills install "@zjxuyunshi/gpt-image-2" -s "gpt-image-2"
+   ```
+
+   Then locate the installed skill directory and use its runner from that real
+   path. Never copy a path from another machine. If installation, login, or
+   access fails, report the exact blocker and the one required user action;
+   otherwise resume the original image request without asking the user to repeat
+   it.
 
 ## Input policy
 
@@ -102,9 +153,9 @@ hard-coded path from another machine:
 BUN_BE_BUN=1 oo "<gpt-image-2-skill-dir>/scripts/run_image.js" ...
 ```
 
-If that runtime path is unavailable, use the same runner with local `node`. If
-the companion skill is missing, stop and report the dependency rather than
-switching models or connectors.
+If that runtime path is unavailable, use the same runner with local `node`. The
+first-run setup installs a missing companion; do not switch models or
+connectors as a fallback.
 
 ### Original text-to-image
 
@@ -171,6 +222,8 @@ type and dimensions. For transparency, verify a PNG with alpha when practical.
 - Missing prompt, subject, or required event/menu copy: ask only for the
   missing value.
 - Ambiguous source images: ask which one is the main subject.
+- Missing OO CLI, authentication, or companion skill: follow **First-run
+  setup**, then resume the original request.
 - Auth, billing, permission, upload, schema, or inaccessible-source failure:
   report the runner's exact blocker; do not silently switch models or resubmit.
 - Interrupted or timed-out run: resume with `session_file` or `session_id`.
