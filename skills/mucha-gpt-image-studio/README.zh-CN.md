@@ -8,6 +8,33 @@
 
 `mucha-gpt-image-studio` 是一个 Agent Skill，用 GPT Image 2 生成精致的穆夏风头像、宠物海报、邀请函插画、菜单装饰框、朋友圈背景图、壁纸和其他装饰性图片。它负责审美与构图决策，并将生成、改图、上传、恢复任务和下载成品交给配套的 `gpt-image-2` Skill。
 
+## 看看实际效果
+
+以下四张为该 Skill 生成的典型成品，用于让用户在使用前快速判断它适合的视觉方向。它们不是只能复用的固定模板：用户可以替换主体、配色、文案或参考照片，同时沿用穆夏式的新艺术风格方向。
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <a href="examples/mucha-corgi-poster.png"><img src="examples/mucha-corgi-poster.png" alt="穆夏风花卉小柯基海报" width="100%"></a><br>
+      <strong>花卉小柯基海报</strong>
+    </td>
+    <td width="50%" align="center">
+      <a href="examples/mucha-jiangnan-portrait.png"><img src="examples/mucha-jiangnan-portrait.png" alt="穆夏风江南女子肖像" width="100%"></a><br>
+      <strong>江南婉约人物肖像</strong>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <a href="examples/mucha-huaiyang-menu.png"><img src="examples/mucha-huaiyang-menu.png" alt="穆夏风淮扬菜菜单" width="100%"></a><br>
+      <strong>淮扬雅宴菜单</strong>
+    </td>
+    <td width="50%" align="center">
+      <a href="examples/mucha-huizhou-architecture.png"><img src="examples/mucha-huizhou-architecture.png" alt="穆夏风徽派建筑风景" width="100%"></a><br>
+      <strong>徽派建筑风景</strong>
+    </td>
+  </tr>
+</table>
+
 ## 能做什么
 
 ### 1. 依据文字描述生成原创穆夏风图片
