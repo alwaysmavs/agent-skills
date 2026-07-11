@@ -1,8 +1,8 @@
-import { readFileSync } from 'node:fs';
+const { readFileSync } = require('fs');
 
 const file = process.argv[2];
 if (!file) {
-  console.error('Usage: node check-editorial-deck.mjs /path/to/index.html');
+  console.error('Usage: node check-editorial-deck.js /path/to/index.html');
   process.exit(2);
 }
 

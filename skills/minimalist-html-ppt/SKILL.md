@@ -12,6 +12,7 @@ Create original browser-native presentations with a quiet, typography-led visual
 Start from [assets/editorial-web-deck/template.html](assets/editorial-web-deck/template.html). It is the default runtime for this skill:
 
 - one direct-open index.html; no API, oo CLI, build step, or presentation framework;
+- plain JavaScript only: do not add `.mjs`, `type="module"`, ESM `import`/`export`, or a bundler dependency;
 - horizontal #deck with native keyboard, wheel, touch, dot navigation, page hash, and ESC overview;
 - optional Canvas/WebGL only on semantic hero pages;
 - B static-content toggle plus prefers-reduced-motion and a static fallback; B stops ambient and element motion but preserves the horizontal page transition.
@@ -111,7 +112,7 @@ Use plain HTML and CSS for diagrams, interface states, and evidence when they im
 ## Validate before handoff
 
 ~~~bash
-node scripts/check-editorial-deck.mjs /path/to/index.html
+node scripts/check-editorial-deck.js /path/to/index.html
 ~~~
 
 Treat checker errors as blocking. Then open the actual file and inspect the first, a dense middle, and the final page at 16:9. Verify navigation, overview, static mode, reduced-motion behavior, font fallback, Chinese line breaks, contrast, and clipping.
