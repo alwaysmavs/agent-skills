@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f3f0e9" />
-    <title>第一次打开，不该从猜测开始</title>
+    <title>我把一套做 PPT 的方法，装进了一个 Skill</title>
     <style>
       :root {
         --paper: #f3f0e9;
@@ -132,6 +132,26 @@
       .decision-cost { margin: 4.2vh 0 0; color: var(--muted); font-size: clamp(13px,.92vw,17px); }
       .decision-cost b { color: var(--ink); font-weight: 500; }
 
+      .file-tree { width: min(31vw,590px); margin: 0 auto; border: 1px solid var(--hairline); background: var(--surface); text-align: left; }
+      .file-tree__bar { display: flex; justify-content: space-between; padding: 1.3vh 1.2vw; border-bottom: 1px solid var(--hairline); color: var(--muted); font-family: var(--mono); font-size: clamp(9px,.7vw,13px); }
+      .file-tree pre { margin: 0; padding: 2.6vh 1.8vw 3vh; color: var(--ink); font-family: var(--mono); font-size: clamp(11px,.86vw,16px); line-height: 1.9; white-space: pre-wrap; }
+      .file-tree mark { background: none; color: var(--accent); }
+      .workflow { display: grid; grid-template-columns: repeat(5,1fr); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+      .workflow-step { position: relative; min-height: 31vh; padding: 3.2vh 1.7vw; border-right: 1px solid var(--hairline); }
+      .workflow-step:last-child { border-right: 0; }
+      .workflow-step small { color: var(--accent); font-family: var(--mono); font-size: clamp(9px,.7vw,13px); letter-spacing: .08em; }
+      .workflow-step strong { display: block; margin: 4.2vh 0 1.8vh; font-size: clamp(22px,1.8vw,35px); font-weight: 500; line-height: 1.3; }
+      .workflow-step p { margin: 0; color: var(--muted); font-size: clamp(12px,.86vw,16px); line-height: 1.6; }
+      .role-sample { display: grid; gap: 2.1vh; margin-top: 3.3vh; }
+      .role-sample div { display: grid; grid-template-columns: 1fr 3fr; align-items: baseline; padding-top: 1.4vh; border-top: 1px solid var(--hairline); }
+      .role-sample small { color: var(--accent); font-family: var(--mono); }
+      .role-sample span { color: var(--muted); font-size: clamp(13px,.94vw,18px); }
+      .motion-sequence { display: grid; gap: 2.1vh; margin-top: 4vh; }
+      .motion-sequence div { display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 1vw; }
+      .motion-sequence time { color: var(--accent); font-family: var(--mono); font-size: clamp(10px,.75vw,14px); }
+      .motion-sequence i { display: block; height: 1px; background: var(--hairline); transform-origin: left; }
+      .motion-sequence div:nth-child(2) i { background: var(--accent); }
+
       .closing { grid-column: 2 / span 9; grid-row: 2; align-self: center; }
       .closing h2 { max-width: 10em; margin-bottom: 3.3vh; font-family: var(--serif); font-size: clamp(50px,5vw,96px); font-weight: 500; letter-spacing: -.055em; line-height: 1.16; }
       .closing > p:last-child { max-width: 30em; margin: 0; color: rgba(37,38,34,.68); font-size: clamp(15px,1.1vw,21px); line-height: 1.7; }
@@ -182,70 +202,86 @@
   <body class="hero-active">
     <div class="light-field" aria-hidden="true"></div>
     <div class="static-field" aria-hidden="true"></div>
-    <main id="deck" aria-label="产品设计评审：新用户空状态">
-      <section class="slide slide--hero" data-hero="true" data-animate="entry" data-sensory-task="让观众进入用户第一次面对空工作台时短暂停顿的状态" data-motion-intent="用同一纸色上的低频明暗变化和依次建立的标题、证据表现注意力寻找落点，而非制造装饰性背景" aria-label="第 1 页：封面与核心判断">
+    <main id="deck" aria-label="Minimalist HTML PPT Skill 产品介绍">
+      <section class="slide slide--hero" data-hero="true" data-animate="entry" data-sensory-task="用一句个人创作判断让观众理解这是一个可安装的 PPT 方法而非普通模板" data-motion-intent="让标题、解释与 ZIP 交付提示依次建立，表现一套方法被整理成可带走的工具" aria-label="第 1 页：封面钩子">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">PRODUCT DESIGN REVIEW</span><span>01 / 08</span></div><span class="meta__right">NEW USER WORKSPACE · 2026</span></header>
-          <div class="hero-copy"><p class="eyebrow" data-anim>THE FIRST MOMENT</p><h1 data-anim>第一次打开，<br>不该从猜测开始。</h1><p data-anim>我们重新设计的不是一个“空白页面”，而是用户判断产品是否理解自己的第一个瞬间。</p></div>
-          <aside class="opening-evidence" data-anim="evidence"><i></i><small>09:17 · FIRST OPEN</small><p>光标停在页面中央，<br>8 秒没有落点。</p></aside>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">MY RED SKILL</span><span>01 / 12</span></div><span class="meta__right">MINIMALIST HTML PPT · 2026</span></header>
+          <div class="hero-copy"><p class="eyebrow" data-anim>FROM A METHOD TO A SKILL</p><h1 data-anim>我把一套<br>做 PPT 的方法，<br>装进了一个 Skill。</h1><p data-anim>它不替你把文字塞进模板；它先理解故事，再决定每一页应该让观众看见什么。</p></div>
+          <aside class="opening-evidence" data-anim="evidence"><i></i><small>AVAILABLE IN THIS NOTE</small><p>一个 ZIP，<br>交给 Agent 直接使用。</p></aside>
           <footer class="foot"><span>← → / 滚轮 / 触摸切页</span><span>B 切换静态内容</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-animate="quote" data-sensory-task="用一次真实测试片段让团队看见用户停顿发生的具体时刻" aria-label="第 2 页：用户观察">
+      <section class="slide" data-animate="quote" data-sensory-task="呈现使用 AI 做 PPT 时仍需人工收拾页面这一创作者共同体验" aria-label="第 2 页：创作困境">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">USER MOMENT</span><span>02 / 08</span></div><span class="meta__right">USABILITY SESSION 04</span></header>
-          <div class="moment"><div class="moment-copy"><p class="eyebrow" data-anim>ORDINARY OBSERVATION</p><h2 data-anim>页面很安静，<br>用户却没有开始。</h2><p data-anim>没有项目、成员或历史记录。我们原本把它理解为“无内容”，用户却把它理解为“我是不是来错了地方”。</p></div><aside class="session"><time data-anim>09:17:08 — 09:17:16</time><blockquote data-anim="line">“这里是在等别人邀请我，还是要我先建一个东西？”</blockquote><cite data-anim>新用户测试 · 第 4 位参与者</cite></aside></div>
-          <footer class="foot"><span>证据：录屏片段与现场原话</span><span>先看见时刻，再讨论界面</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">THE REAL MOMENT</span><span>02 / 12</span></div><span class="meta__right">AFTER THE FIRST DRAFT</span></header>
+          <div class="moment"><div class="moment-copy"><p class="eyebrow" data-anim>WHY I BUILT IT</p><h2 data-anim>我想让 Agent<br>替我做 PPT。</h2><p data-anim>结果经常是：内容看起来齐了，但故事没有重心、页面没有节奏，最后还是我替 AI 重新收拾一遍。</p></div><aside class="session"><time data-anim>01:13 · STILL EDITING</time><blockquote data-anim="line">“为什么每页都像同一个模板，只是换了一段字？”</blockquote><cite data-anim>一次又一次生成后的真实困惑</cite></aside></div>
+          <footer class="foot"><span>问题不是生成速度</span><span>而是缺少判断与编排</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-animate="focus" data-sensory-task="把抽象的空状态问题收束为光标没有落点这一可观察细节" aria-label="第 3 页：细节放大">
+      <section class="slide" data-animate="focus" data-sensory-task="把 AI PPT 的问题从不好看收束为每一页没有明确认知任务" aria-label="第 3 页：问题细节">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">SMALL DETAIL</span><span>03 / 08</span></div><span class="meta__right">CURSOR WITHOUT A DESTINATION</span></header>
-          <div class="detail"><div class="detail-copy"><p class="eyebrow" data-anim>A TINY PAUSE</p><h2 data-anim>光标没有落点，<br>因为页面没有给出方向。</h2><p data-anim>用户不是缺少按钮，而是尚未判断：应该创建自己的项目，还是等待加入已有项目。</p></div><div class="workspace" data-anim="frame" aria-label="空工作台局部示意"><div class="workspace__bar"></div><div class="workspace__empty" data-anim="target"></div><div class="workspace__cursor" data-anim="cursor"></div><span class="workspace__trace" data-anim="trace">8 SEC · NO ACTION</span></div></div>
-          <footer class="foot"><span>感知资源：停顿 / 不确定</span><span>细节是可被讨论的证据</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">THE MISSED DETAIL</span><span>03 / 12</span></div><span class="meta__right">A DECK WITHOUT A READING PATH</span></header>
+          <div class="detail"><div class="detail-copy"><p class="eyebrow" data-anim>NOT A STYLE PROBLEM</p><h2 data-anim>真正缺的，<br>不是另一套模板。</h2><p data-anim>而是有人先决定：这一页建立情境、提出判断、给出证据，还是让团队做选择。</p></div><div class="workspace" data-anim="frame" aria-label="重复模板页面示意"><div class="workspace__bar"></div><div class="workspace__empty" data-anim="target"></div><div class="workspace__cursor" data-anim="cursor"></div><span class="workspace__trace" data-anim="trace">SAME LAYOUT · NEW COPY</span></div></div>
+          <footer class="foot"><span>普通对象：一张空白幻灯片</span><span>被忽略的细节：阅读顺序</span></footer>
         </div>
       </section>
 
-      <section class="slide slide--pause" data-animate="reframe" data-sensory-task="用一次高对比停顿重新命名空状态并建立后续设计原则" aria-label="第 4 页：重新命名">
+      <section class="slide slide--pause" data-animate="reframe" data-sensory-task="重新定义好 PPT 为一组认知任务而不是装饰过的页面集合" aria-label="第 4 页：核心重构">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">REFRAME</span><span>04 / 08</span></div><span class="meta__right">FROM ABSENCE TO ORIENTATION</span></header>
-          <div class="reframe"><p class="eyebrow" data-anim>THE DESIGN PRINCIPLE</p><h2><span data-anim="line">空状态不是没有内容。</span><br><span data-anim="line">它是产品第一次给予方向的地方。</span></h2><p data-anim>设计目标从“填补空白”转变为“让用户确认自己来对了，并知道下一步”。</p></div>
-          <footer class="foot"><span>先建立方向感，再要求行动</span><span>一次重构，改变后续取舍</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">REFRAME</span><span>04 / 12</span></div><span class="meta__right">FROM TEMPLATE TO EXPERIENCE</span></header>
+          <div class="reframe"><p class="eyebrow" data-anim>THE DESIGN PRINCIPLE</p><h2><span data-anim="line">好的 PPT，不是装饰页面。</span><br><span data-anim="line">是安排理解发生的顺序。</span></h2><p data-anim>先决定观众如何进入、观察、重新理解、相信证据并做出判断，再选择版式、字体和动效。</p></div>
+          <footer class="foot"><span>方法先于样式</span><span>内容 → 感知 → 页面</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-animate="evidence" data-sensory-task="用三项测试信号证明方向感问题真实存在并明确后续验证基线" aria-label="第 5 页：研究证据">
+      <section class="slide" data-animate="product" data-sensory-task="清楚定义 Skill 的交付物与可安装结构" aria-label="第 5 页：产品是什么">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">EVIDENCE</span><span>05 / 08</span></div><span class="meta__right">6 PARTICIPANTS · PROTOTYPE TEST</span></header>
-          <div class="evidence"><div class="evidence-head"><h2 data-anim>问题不是按钮难找，<br>而是用户无法判断哪条路径属于自己。</h2><p data-anim>小样本用于识别体验模式，不作为总体转化率结论。三项信号共同指向“方向不明”，而非操作能力不足。</p></div><div class="signals"><article class="signal" data-anim="signal"><small>FIRST ACTION</small><strong>4 / 6</strong><p>首次进入后超过 5 秒没有产生任何动作。</p></article><article class="signal" data-anim="signal"><small>PATH CHOICE</small><strong>3 / 6</strong><p>询问自己应该创建项目，还是等待邀请。</p></article><article class="signal" data-anim="signal"><small>COMPREHENSION</small><strong>2 / 6</strong><p>能在无提示下正确描述自己的下一步。</p></article></div></div>
-          <footer class="foot"><span>样本只用于发现问题模式</span><span>证据 → 原则 → 方案</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">WHAT IT IS</span><span>05 / 12</span></div><span class="meta__right">A DIRECT-OPEN AGENT SKILL</span></header>
+          <div class="proposal"><div class="proposal-copy"><p class="eyebrow" data-anim>MINIMALIST HTML PPT</p><h2 data-anim>一套给 Agent 使用的浏览器原生 PPT 工作流。</h2><p data-anim>从故事、页面任务、视觉系统到语义动效和检查脚本，都放在一个可以审阅、安装和继续修改的 Skill 目录里。</p></div><div class="file-tree" data-anim="product" aria-label="Skill 文件结构"><div class="file-tree__bar"><span>minimalist-html-ppt/</span><span>ZIP</span></div><pre><mark>SKILL.md</mark>&#10;README.md&#10;assets/&#10;  editorial-web-deck/&#10;    template.html&#10;references/&#10;  hara-method.md&#10;  presentation-patterns.md&#10;  runtime.md&#10;scripts/&#10;  check-editorial-deck.js</pre></div></div>
+          <footer class="foot"><span>不是黑盒服务，也不是图片模板</span><span>规则、模板与检查全部可见</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-animate="product" data-sensory-task="展示一个只给予一个主要起点且保留次级路径的产品状态" aria-label="第 6 页：方案状态">
+      <section class="slide" data-animate="evidence" data-sensory-task="用三个组成部分解释 Skill 如何同时处理故事视觉与运行可靠性" aria-label="第 6 页：三个能力层">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">PROPOSED STATE</span><span>06 / 08</span></div><span class="meta__right">ONE CLEAR FIRST ACTION</span></header>
-          <div class="proposal"><div class="proposal-copy"><p class="eyebrow" data-anim>THE FIRST INVITATION</p><h2 data-anim>先给一个可以完成的动作，再展开完整工作台。</h2><p data-anim>默认推荐“创建第一个项目”，同时保留“加入已有项目”的次级入口。用户不需要先理解系统，才有资格开始。</p></div><div class="product-state" data-anim="product" aria-label="新版空状态界面示意"><div class="product-state__bar"></div><div class="product-state__body"><small>你好，Lin</small><strong>从第一个项目开始</strong><p>把想法、任务与协作放在同一个地方。</p><b>创建项目</b><span>我需要加入已有项目</span></div><span class="annotation annotation--one" data-anim="annotation">PRIMARY START</span><span class="annotation annotation--two" data-anim="annotation">SECONDARY PATH</span></div></div>
-          <footer class="foot"><span>界面只回答一个体验问题</span><span>方向明确，但不封死另一条路径</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">THREE LAYERS</span><span>06 / 12</span></div><span class="meta__right">METHOD · VISUAL · RUNTIME</span></header>
+          <div class="evidence"><div class="evidence-head"><h2 data-anim>它不是只会排版，<br>而是同时处理三层问题。</h2><p data-anim>三层彼此独立：故事方法不等于视觉皮肤，视觉系统也不应该破坏浏览器运行与离线交付。</p></div><div class="signals"><article class="signal" data-anim="signal"><small>01 · METHOD</small><strong>故事</strong><p>从日常观察出发，写出 reframe、证据与观众最终应该带走的判断。</p></article><article class="signal" data-anim="signal"><small>02 · VISUAL</small><strong>视觉</strong><p>用纸色、网格、字体角色和克制的强调色建立统一阅读气质。</p></article><article class="signal" data-anim="signal"><small>03 · RUNTIME</small><strong>交付</strong><p>单 HTML、横向切页、语义动效、索引、静态模式和失败降级。</p></article></div></div>
+          <footer class="foot"><span>方法决定讲什么</span><span>视觉与运行时决定如何被理解</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-animate="decision" data-sensory-task="并置被放弃与被选择的方案并明确团队愿意接受的代价" aria-label="第 7 页：方案取舍">
+      <section class="slide" data-animate="evidence" data-sensory-task="展示从输入材料到验证交付的完整生成流程" aria-label="第 7 页：工作流程">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">DECISION</span><span>07 / 08</span></div><span class="meta__right">MAKE THE TRADE-OFF VISIBLE</span></header>
-          <div class="choice"><h2 data-anim>我们选择降低首次判断成本，而不是追求视觉上的绝对空白。</h2><div class="choice-grid"><article data-anim="left"><small>NOT SELECTED</small><h3>只显示空白与一个“新建”按钮</h3><p>界面更轻，但把“我应该做什么”的解释成本完全留给用户。</p></article><article data-anim="right"><small>SELECTED</small><h3>用一个主要起点解释下一步价值</h3><p>增加少量引导，同时降低首次任务的犹豫与路径误解。</p></article></div><p class="decision-cost" data-anim><b>接受的代价：</b>页面多一层引导文案；换取更明确的首次方向感。</p></div>
-          <footer class="foot"><span>选择与代价同时写出来</span><span>设计决策，不隐藏在稿件里</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">WORKFLOW</span><span>07 / 12</span></div><span class="meta__right">FIVE DECISIONS BEFORE DELIVERY</span></header>
+          <div class="evidence"><div class="evidence-head"><h2 data-anim>Agent 不是直接写页面，<br>而是连续做五次判断。</h2><p data-anim>每一步都有明确输出，避免在视觉完成后才发现故事顺序错了。</p></div><div class="workflow"><article class="workflow-step" data-anim="signal"><small>01</small><strong>理解材料</strong><p>观众是谁，分享后希望发生什么。</p></article><article class="workflow-step" data-anim="signal"><small>02</small><strong>写感知简报</strong><p>观察、感受、重构与余味。</p></article><article class="workflow-step" data-anim="signal"><small>03</small><strong>安排故事</strong><p>进入、细节、证据、方案与决定。</p></article><article class="workflow-step" data-anim="signal"><small>04</small><strong>选择页面</strong><p>每页只承担一个认知任务。</p></article><article class="workflow-step" data-anim="signal"><small>05</small><strong>渲染检查</strong><p>切页、动效、字体、截断和降级。</p></article></div></div>
+          <footer class="foot"><span>先建立故事，再生成视觉</span><span>最后检查真实渲染结果</span></footer>
         </div>
       </section>
 
-      <section class="slide slide--hero" data-hero="true" data-animate="aftertaste" data-sensory-task="回到最初的光标时刻并留下用户能够自然开始这一验证目标" data-motion-intent="让同一纸面光线回到低频且近乎静止，并让水平线与落点最后成立，表现方向已经出现而非制造结束高潮" aria-label="第 8 页：验证与余味">
+      <section class="slide" data-animate="decision" data-sensory-task="解释字体颜色与留白不是随机装饰而是承担不同叙事角色" aria-label="第 8 页：视觉系统">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">VALIDATE THE MOMENT</span><span>08 / 08</span></div><span class="meta__right">NEXT, NOT A PROMISE</span></header>
-          <div class="closing"><p class="eyebrow" data-anim>FROM EXPERIENCE TO BEHAVIOR</p><h2 data-anim>让光标自然落下，<br>再进入开发。</h2><p data-anim>下一轮原型只验证三件事：用户能否说出下一步、是否选择正确路径，以及能否完成第一个项目。</p></div><div class="closing-mark" data-anim="destination"><span>THE FIRST ACTION<br>HAS A DESTINATION</span></div>
-          <footer class="foot"><span>理解 → 选择 → 完成</span><span>08 / 08</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">VISUAL SYSTEM</span><span>08 / 12</span></div><span class="meta__right">ONE PAPER · ONE ACCENT · THREE ROLES</span></header>
+          <div class="choice"><h2 data-anim>风格不是“米白＋宋体”，而是每个视觉选择都有职责。</h2><div class="choice-grid"><article data-anim="left"><small>TYPE ROLES</small><h3>衬线负责观察，黑体负责工作。</h3><div class="role-sample"><div><small>SERIF</small><span>进入、用户原话、reframe、余味</span></div><div><small>SANS</small><span>分析、证据、产品、决策</span></div><div><small>MONO</small><span>时间、页码、样本与方法标签</span></div></div></article><article data-anim="right"><small>COLOR ROLES</small><h3>一种纸色，一个强调语义。</h3><p>白不是空背景，而是纸、光和接受信息的空间；红褐只标记被发现的痕迹、选择或最终落点。</p></article></div><p class="decision-cost" data-anim><b>约束：</b>不为了“高级感”增加第四套字体、多种亮色或无意义装饰。</p></div>
+          <footer class="foot"><span>视觉角色来自内容角色</span><span>克制不是减少，而是让关系更清楚</span></footer>
         </div>
+      </section>
+
+      <section class="slide" data-animate="focus" data-sensory-task="解释语义动效如何与横向切页共同安排阅读顺序" aria-label="第 9 页：语义动效">
+        <div class="shell"><header class="meta"><div class="meta__left"><span class="meta__tag">SEMANTIC MOTION</span><span>09 / 12</span></div><span class="meta__right">MOTION FOLLOWS READING</span></header><div class="detail"><div class="detail-copy"><p class="eyebrow" data-anim>NOT A GENERIC FADE-UP</p><h2 data-anim>动效不是让页面更炫，<br>而是决定先看什么。</h2><p data-anim>切页负责空间移动；标题、证据、界面和注释按页面任务依次成立。回到旧页会重播，快速翻页会取消旧动画。</p></div><div class="workspace" data-anim="frame" aria-label="动效时间序列"><div class="workspace__bar"></div><div class="motion-sequence"><div data-anim="target"><time>000ms</time><i></i></div><div data-anim="cursor"><time>300ms</time><i></i></div><div data-anim="trace"><time>680ms</time><i></i></div></div><span class="workspace__trace">PAGE → TITLE → EVIDENCE</span></div></div><footer class="foot"><span>原生 Web Animations API</span><span>B 保留切页，只关闭内容动效</span></footer></div>
+      </section>
+
+      <section class="slide" data-animate="evidence" data-sensory-task="列出单文件交付导航与降级三项可验证结果" aria-label="第 10 页：交付可靠性">
+        <div class="shell"><header class="meta"><div class="meta__left"><span class="meta__tag">DELIVERY</span><span>10 / 12</span></div><span class="meta__right">DIRECT OPEN · OFFLINE · TESTABLE</span></header><div class="evidence"><div class="evidence-head"><h2 data-anim>最终交付的，不是截图。<br>而是一份真正能播放的 HTML。</h2><p data-anim>没有构建步骤，也不依赖在线服务。模板和检查脚本一起交付，让 Agent 不只负责生成，也负责验证。</p></div><div class="signals"><article class="signal" data-anim="signal"><small>PLAY</small><strong>1 HTML</strong><p>方向键、滚轮、触摸、URL hash 与 ESC 页面索引。</p></article><article class="signal" data-anim="signal"><small>MOTION</small><strong>8 recipes</strong><p>封面、引语、聚焦、重构、证据、产品、决策和余味。</p></article><article class="signal" data-anim="signal"><small>FALLBACK</small><strong>4 states</strong><p>静态内容、减少动态、截图模式与打印最终态。</p></article></div></div><footer class="foot"><span>内容在动画失败时仍然可读</span><span>检查脚本阻止关键运行错误</span></footer></div>
+      </section>
+
+      <section class="slide" data-animate="decision" data-sensory-task="帮助观众判断这个 Skill 是否适合自己的工作场景" aria-label="第 11 页：适用边界">
+        <div class="shell"><header class="meta"><div class="meta__left"><span class="meta__tag">FIT</span><span>11 / 12</span></div><span class="meta__right">KNOW THE BOUNDARY</span></header><div class="choice"><h2 data-anim>它适合有观点的产品故事，不适合把所有信息塞进一页。</h2><div class="choice-grid"><article data-anim="left"><small>GOOD FIT</small><h3>设计评审、产品发布、策略叙事与创意提案</h3><p>适合产品经理、设计师、独立开发者和需要有表达气质的团队汇报。</p></article><article data-anim="right"><small>NOT THE BEST FIT</small><h3>密集培训、财务表格与多人实时编辑</h3><p>如果必须交付可编辑 PPTX、塞入大量表格或多人同时改稿，应选择其他工具。</p></article></div><p class="decision-cost" data-anim><b>它的选择：</b>用更少页面对象，换取更清楚的观点、节奏和阅读顺序。</p></div><footer class="foot"><span>明确不适合什么，才能知道它真正擅长什么</span><span>产品边界也是设计的一部分</span></footer></div>
+      </section>
+
+      <section class="slide slide--hero" data-hero="true" data-animate="aftertaste" data-sensory-task="邀请观众下载 ZIP 关注创作者并把自己的产品故事交给 Skill" data-motion-intent="让下载提示与最终落点最后出现，把看完演示转化为关注和实际安装" aria-label="第 12 页：下载与关注">
+        <div class="shell"><header class="meta"><div class="meta__left"><span class="meta__tag">TRY THE SKILL</span><span>12 / 12</span></div><span class="meta__right">ZIP ATTACHED TO THIS NOTE</span></header><div class="closing"><p class="eyebrow" data-anim>TAKE THE METHOD WITH YOU</p><h2 data-anim>把你的产品故事，<br>交给它试一次。</h2><p data-anim>ZIP 会随这篇笔记一起分享。安装后，把产品材料、目标观众和希望发生的行动告诉 Agent；如果你想继续看到这类原创 Skill，欢迎关注我。</p></div><div class="closing-mark" data-anim="destination"><span>DOWNLOAD ZIP<br>FOLLOW FOR MORE</span></div><footer class="foot"><span>收藏 · 下载 · 安装 · 讲一个更完整的故事</span><span>12 / 12</span></footer></div>
       </section>
     </main>
     <nav class="controls" aria-label="页码导航"></nav>
@@ -269,7 +305,7 @@
         playDelay: 300,
         ease: 'cubic-bezier(.22,1,.36,1)'
       };
-      const labels = ['封面与判断', '用户观察', '细节放大', '重新命名', '研究证据', '方案状态', '方案取舍', '验证与余味'];
+      const labels = ['封面钩子', '创作困境', '问题细节', '核心重构', '产品是什么', '三个能力层', '工作流程', '视觉系统', '语义动效', '交付可靠性', '适用边界', '下载与关注'];
       deck.style.width = `${slides.length * 100}vw`;
       const total = String(slides.length).padStart(2, '0');
       slides.forEach((slide, index) => {
