@@ -14,7 +14,7 @@ Start from [assets/editorial-web-deck/template.html](assets/editorial-web-deck/t
 - one direct-open index.html; no API, oo CLI, build step, or presentation framework;
 - horizontal #deck with native keyboard, wheel, touch, dot navigation, page hash, and ESC overview;
 - optional Canvas/WebGL only on semantic hero pages;
-- B static-mode toggle plus prefers-reduced-motion and a static fallback.
+- B static-content toggle plus prefers-reduced-motion and a static fallback; B stops ambient and element motion but preserves the horizontal page transition.
 
 When the user provides an existing deck built on this runtime, edit its content and CSS rather than replacing it with Reveal.js, PPTX, Canvas-only slides, or another framework. Preserve the navigation and fallback behavior unless the user explicitly asks to change the runtime.
 
@@ -57,11 +57,44 @@ Read [references/presentation-patterns.md](references/presentation-patterns.md) 
 
 - Treat white as paper, light, time, translucency, or a receptive field—not merely a blank hex value.
 - Use one semantic accent only. It may signal a trace, changed state, material edge, or decision axis.
-- Use serif display type for key statements, a restrained sans face for body copy, and mono type for metadata. Use actual 400/500/600 weights and font-synthesis: none.
+- Use serif display type for entry, human utterance, reframe, and aftertaste; use the restrained sans face for analysis, evidence, product state, data, comparison, decision, validation, and body copy; use mono only for metadata, time, sample labels, and short annotations. Use actual 400/500/600 weights and font-synthesis: none.
 - Keep Chinese tracking minimal; use generous line height and avoid forcing paragraphs into narrow ch widths.
 - Let text sit inside a stable safe area, but avoid mechanically centered or overly regular compositions. Use deliberate asymmetry only when it improves the reading path.
 - Use images only as material evidence of an object, place, surface, or behavior. Do not bake presentation text into images.
 - Use motion to express the sensory resource—such as slow light for diffusion or stillness for waiting—not to make pages look premium.
+
+### Keep typography semantic
+
+Treat the font change as a narrative boundary, not page decoration:
+
+~~~text
+serif: entry / user voice / reframe / aftertaste
+sans: analysis / evidence / product / data / comparison / decision / validation
+mono: page number / time / category / sample / method metadata
+~~~
+
+Do not use serif for ordinary body copy, interface controls, chart labels, product buttons, or data merely to make a page feel editorial. Keep large metrics sans with tabular lining figures. A slide may combine a serif user quotation with sans research explanation, but it must not contain two competing display headlines. Do not introduce a fourth family for decorative English.
+
+## Assign semantic element motion
+
+Keep the horizontal deck transition as the primary navigation motion. A slide that benefits from an internal reading sequence may declare one `data-animate` recipe and mark only meaningful participants with `data-anim`.
+
+Use the smallest suitable recipe:
+
+- `entry` for a cover whose title and observation should establish in stages;
+- `quote` for context, a user utterance, and its source;
+- `focus` for a material or interface detail that becomes noticeable;
+- `reframe` for semantic lines that establish a new reading slowly;
+- `evidence` for a takeaway followed by metrics or proof;
+- `product` for a product state followed by annotations;
+- `decision` for rejected state, selected state, and accepted cost;
+- `aftertaste` for a sparse close whose final trace lands last.
+
+Start the active slide's recipe during the latter half of the horizontal transition. Replay it when the slide is revisited. Cancel unfinished element animations before another navigation action. Do not animate every DOM node, every title character, or every footer; stable chrome gives internal motion a reference frame.
+
+Use native Web Animations in the single-file runtime. Prefer `opacity` and `transform`; reveal lines with `scaleX`, bars with `scaleY`, and numbers with a restrained scale no smaller than `.92`. Avoid bounce, rotation entrances, layout-changing width/height motion, large blur, and one generic fade-up recipe across the deck.
+
+Motion is progressive enhancement. Content must remain visible when animation APIs fail, `prefers-reduced-motion` is active, B static-content mode is active, capture/print mode is active, or the ESC overview clones a slide. B must preserve the horizontal page transition; the operating-system reduced-motion preference may remove it.
 
 ## Adapt the template safely
 
@@ -70,6 +103,8 @@ Read [references/presentation-patterns.md](references/presentation-patterns.md) 
 3. If the slide count changes, update #deck width, visible page totals, and the labels array together.
 4. Keep the Canvas only if its motion has a stated semantic role. Otherwise remove the Canvas and static-field pair together.
 5. Keep all content meaningful when motion is off.
+6. If a slide uses `data-animate`, use a supported semantic recipe and add at least one `data-anim` participant.
+7. Keep overview, print, capture, static-content, and reduced-motion states at the fully revealed final state.
 
 Use plain HTML and CSS for diagrams, interface states, and evidence when they improve legibility. Keep a normal slide to one focal element and no more than three supporting units.
 

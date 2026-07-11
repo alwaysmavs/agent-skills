@@ -10,6 +10,7 @@ const html = readFileSync(file, 'utf8');
 const slides = [...html.matchAll(/<section\b[^>]*\bclass=["'][^"']*\bslide\b[^"']*["'][^>]*>/g)].map((match) => match[0]);
 const errors = [];
 const warnings = [];
+const motionRecipes = new Set(['entry', 'cascade', 'quote', 'focus', 'reframe', 'evidence', 'product', 'decision', 'aftertaste', 'pipeline', 'timeline', 'process']);
 
 if (slides.length === 0) errors.push('P0: no <section class="slide"> elements found.');
 if (!/prefers-reduced-motion/.test(html)) errors.push('P0: missing prefers-reduced-motion fallback.');
@@ -25,7 +26,19 @@ slides.forEach((slide, index) => {
     heroCount += 1;
     if (!/data-motion-intent=["'][^"']+/.test(slide)) errors.push(`P0: hero slide ${page} has no data-motion-intent.`);
   }
+  const recipe = slide.match(/data-animate=["']([^"']+)["']/)?.[1];
+  if (recipe && !motionRecipes.has(recipe)) errors.push(`P0: slide ${page} uses unsupported motion recipe "${recipe}".`);
 });
+
+const animatedSlideCount = slides.filter((slide) => /data-animate=["'][^"']+/.test(slide)).length;
+const animatedElementCount = (html.match(/data-anim(?:=|\s|>)/g) || []).length;
+if (animatedSlideCount && !animatedElementCount) errors.push('P0: slides declare data-animate but the deck has no data-anim participants.');
+if (animatedSlideCount && !/(Element\.prototype\.animate|\.animate\()/.test(html)) errors.push('P0: semantic motion is declared but no element animation engine was found.');
+if (animatedSlideCount && !/(playSlide|__playSlide)/.test(html)) errors.push('P0: semantic motion is declared but no playSlide entry point was found.');
+if (animatedSlideCount && !/(cancelMotion|getAnimations\(\)|\.cancel\(\))/.test(html)) errors.push('P0: semantic motion has no cancellation path for rapid navigation.');
+if (animatedSlideCount && !/\.overview[^\{]*\[data-anim\][^\{]*\{[^}]*opacity\s*:\s*1\s*!important/s.test(html)) errors.push('P0: overview has no forced final-state reveal for data-anim elements.');
+if (animatedSlideCount && !/(static-mode|low-power)/.test(html)) errors.push('P0: semantic motion has no explicit static-content mode.');
+if (/\.static-mode\s+#deck\s*\{[^}]*transition\s*:\s*none/is.test(html)) warnings.push('P1: static-content mode disables the horizontal page transition; preserve it unless explicitly requested.');
 
 if (slides.length > 0 && heroCount / slides.length > 1 / 3) warnings.push(`P1: ${heroCount}/${slides.length} slides are heroes; keep hero pages to one-third or fewer.`);
 const accentValues = new Set([...html.matchAll(/--(?:accent|acid|warm)\s*:\s*([^;]+)/g)].map((match) => match[1].trim()));

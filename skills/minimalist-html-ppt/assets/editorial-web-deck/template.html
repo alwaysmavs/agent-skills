@@ -3,17 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f4f1ea" />
-    <title>让空状态，先给用户一个可以开始的理由</title>
+    <meta name="theme-color" content="#f3f0e9" />
+    <title>第一次打开，不该从猜测开始</title>
     <style>
       :root {
-        --ink: #302f2a;
-        --paper: #f4f1ea;
-        --paper-deep: #e6e0d6;
-        --fog: #d8d2c7;
-        --trace: #a86352;
-        --muted: #75736c;
-        --rule: rgba(48, 47, 42, .22);
+        --paper: #f3f0e9;
+        --paper-deep: #e9e4da;
+        --surface: #faf8f3;
+        --ink: #252622;
+        --muted: #6e706a;
+        --hairline: #d2cec4;
+        --accent: #a6533f;
+        --accent-soft: rgba(166, 83, 63, .10);
         --serif: "Noto Serif SC", "Songti SC", STSong, serif;
         --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
         --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
@@ -24,182 +25,231 @@
       body { margin: 0; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); }
       button { font: inherit; }
 
-      .webgl-field { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity .7s ease; }
-      .hero-active .webgl-field { opacity: 1; }
-      .static-field { position: fixed; z-index: 0; inset: 0; opacity: 0; pointer-events: none; background: radial-gradient(ellipse at 76% 38%, rgba(255,255,255,.94), transparent 20%), radial-gradient(ellipse at 28% 70%, rgba(168,99,82,.10), transparent 28%), linear-gradient(120deg, #e3ddd2, #f4f1ea 56%, #d9d2c7); }
-      .no-motion .webgl-field { opacity: 0; }
-      .no-motion .static-field { opacity: 1; }
+      .light-field, .static-field { position: fixed; z-index: 0; inset: 0; pointer-events: none; }
+      .light-field {
+        opacity: 0;
+        background:
+          radial-gradient(ellipse at 76% 34%, rgba(255,255,255,.80), transparent 28%),
+          linear-gradient(116deg, var(--paper-deep), var(--paper) 58%, #eee9df);
+        transition: opacity .6s ease;
+        animation: breathe 14s ease-in-out infinite alternate;
+      }
+      .static-field {
+        opacity: 0;
+        background: linear-gradient(116deg, var(--paper-deep), var(--paper) 58%, #eee9df);
+      }
+      .hero-active .light-field { opacity: 1; }
+      .static-mode .light-field, .reduce-motion .light-field { opacity: 0; }
+      .static-mode.hero-active .static-field, .reduce-motion.hero-active .static-field { opacity: 1; }
+      @keyframes breathe { from { filter: brightness(.985); } to { filter: brightness(1.018); } }
 
-      #deck { position: relative; z-index: 1; display: flex; width: 700vw; height: 100vh; transition: transform .72s cubic-bezier(.76,0,.24,1); }
+      #deck { position: relative; z-index: 1; display: flex; height: 100vh; transition: transform .68s cubic-bezier(.76,0,.24,1); }
       .slide { position: relative; width: 100vw; height: 100vh; min-width: 100vw; overflow: hidden; background: var(--paper); }
-      .slide::after { position: absolute; inset: 0; pointer-events: none; content: ""; opacity: .10; background-image: radial-gradient(rgba(48,47,42,.45) .4px, transparent .5px); background-size: 5px 5px; mix-blend-mode: multiply; }
+      .slide::after { position: absolute; inset: 0; pointer-events: none; content: ""; opacity: .055; background-image: radial-gradient(rgba(37,38,34,.52) .38px, transparent .48px); background-size: 5px 5px; }
       .slide--hero { background: transparent; }
-      .slide--hero::after { opacity: .08; }
+      .slide--pause { background: var(--ink); color: var(--paper); }
+      .slide--pause::after { opacity: .035; background-image: radial-gradient(rgba(243,240,233,.55) .38px, transparent .48px); }
 
-      .shell { position: relative; z-index: 1; display: grid; width: 100%; height: 100%; padding: 5.6vh 6.7vw 4.6vh; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 1.45vw; }
-      .meta { display: flex; grid-column: 1 / -1; grid-row: 1; align-items: flex-start; justify-content: space-between; font-family: var(--mono); font-size: clamp(10px, .78vw, 15px); letter-spacing: .04em; line-height: 1.35; }
-      .meta__left { display: flex; align-items: baseline; gap: 1.5em; }
-      .meta__tag, .eyebrow, .hero-kicker { color: var(--trace); }
+      .shell { position: relative; z-index: 1; display: grid; width: 100%; height: 100%; padding: 5.7vh 6.7vw 4.7vh; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 1.45vw; }
+      .meta { display: flex; grid-column: 1 / -1; grid-row: 1; align-items: baseline; justify-content: space-between; font-family: var(--mono); font-size: clamp(10px,.74vw,14px); letter-spacing: .045em; line-height: 1.35; }
+      .meta__left { display: flex; align-items: baseline; gap: 1.6em; }
+      .meta__tag { color: var(--accent); }
       .meta__right, .foot { color: var(--muted); }
-      .foot { display: flex; grid-column: 1 / -1; grid-row: 3; align-items: flex-end; justify-content: space-between; font-family: var(--mono); font-size: clamp(9px, .67vw, 13px); letter-spacing: .04em; line-height: 1.35; }
-      h1, h2, h3, p { margin-top: 0; }
-      .eyebrow, .hero-kicker { margin: 0 0 2.3vh; font-family: var(--mono); font-size: clamp(10px, .82vw, 16px); letter-spacing: .10em; }
+      .slide--pause .meta__tag { color: #d78a73; }
+      .slide--pause .meta__right, .slide--pause .foot { color: rgba(243,240,233,.52); }
+      .foot { display: flex; grid-column: 1 / -1; grid-row: 3; align-items: flex-end; justify-content: space-between; font-family: var(--mono); font-size: clamp(9px,.65vw,12px); letter-spacing: .035em; line-height: 1.4; }
+      h1, h2, h3, p, blockquote { margin-top: 0; }
+      .eyebrow { margin: 0 0 2.4vh; color: var(--accent); font-family: var(--mono); font-size: clamp(10px,.78vw,15px); letter-spacing: .09em; }
 
-      .hero-copy { grid-column: 1 / span 9; grid-row: 2; align-self: center; padding: 0 0 2vh 1vw; }
-      h1 { max-width: 10em; margin-bottom: 3.4vh; font-family: var(--serif); font-size: clamp(54px, 7.1vw, 136px); font-weight: 500; letter-spacing: -.07em; line-height: 1.02; }
-      .hero-copy > p:last-child { max-width: 31em; margin: 0; color: rgba(48,47,42,.72); font-size: clamp(16px, 1.3vw, 25px); line-height: 1.68; }
-      .paper-window { position: absolute; right: 10vw; bottom: 14vh; width: min(25vw, 470px); aspect-ratio: 1.35; border: 1px solid rgba(48,47,42,.16); background: rgba(255,255,255,.15); box-shadow: 25px 32px 52px rgba(58,50,40,.12); transform: rotate(3deg); }
-      .paper-window::before, .paper-window::after { position: absolute; border: 1px solid rgba(48,47,42,.17); border-radius: 50%; content: ""; }
-      .paper-window::before { top: 25%; left: 24%; width: 18%; aspect-ratio: 1; }
-      .paper-window::after { right: 17%; bottom: 19%; width: 7%; aspect-ratio: 1; }
-      .paper-window i { position: absolute; top: 13%; right: 11%; width: 6px; aspect-ratio: 1; border-radius: 50%; background: var(--trace); }
-      .hero-index { position: absolute; right: 7.7vw; bottom: 7.2vh; display: grid; place-items: center; width: min(10vw, 164px); aspect-ratio: 1; border: 1px solid rgba(48,47,42,.28); border-radius: 50%; color: var(--trace); font-family: var(--mono); font-size: clamp(13px, 1.1vw, 21px); }
-      .hero-index::before { position: absolute; inset: 17%; border: 1px dashed rgba(48,47,42,.22); border-radius: 50%; content: ""; }
+      .hero-copy { grid-column: 1 / span 8; grid-row: 2; align-self: center; padding-bottom: 1vh; }
+      h1 { max-width: 9.4em; margin-bottom: 3.2vh; font-family: var(--serif); font-size: clamp(58px,6vw,116px); font-weight: 500; letter-spacing: -.06em; line-height: 1.08; }
+      .hero-copy > p:last-child { max-width: 32em; margin: 0; color: rgba(37,38,34,.70); font-size: clamp(16px,1.16vw,22px); line-height: 1.7; }
+      .opening-evidence { position: absolute; right: 10vw; bottom: 17vh; width: min(27vw,520px); padding: 2.3vh 1.7vw 2.6vh; border-top: 1px solid var(--hairline); color: var(--muted); }
+      .opening-evidence small { display: block; margin-bottom: 2vh; font-family: var(--mono); font-size: clamp(9px,.7vw,13px); letter-spacing: .06em; }
+      .opening-evidence p { margin: 0; font-family: var(--serif); font-size: clamp(20px,1.75vw,34px); line-height: 1.45; }
+      .opening-evidence i { position: absolute; top: -5px; left: 72%; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
 
-      .moment { grid-column: 2 / span 9; grid-row: 2; align-self: center; padding-bottom: 2vh; }
-      .moment h2, .reframe h2, .closing h2 { margin-bottom: 3.3vh; font-family: var(--serif); font-size: clamp(48px, 6.15vw, 118px); font-weight: 500; letter-spacing: -.07em; line-height: 1.1; }
-      .moment > p:last-child { max-width: 32em; margin: 0; color: var(--muted); font-size: clamp(16px, 1.3vw, 25px); line-height: 1.68; }
-      .time-mark { position: absolute; right: 23vw; bottom: 20vh; width: 1px; height: 19vh; background: var(--trace); transform: rotate(21deg); }
-      .time-mark::before { position: absolute; top: -5px; left: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--trace); content: ""; }
+      .moment { grid-column: 2 / span 10; grid-row: 2; align-self: center; display: grid; grid-template-columns: 5fr 4fr; gap: 8vw; align-items: center; }
+      .moment h2 { margin-bottom: 3vh; font-family: var(--serif); font-size: clamp(46px,4.2vw,82px); font-weight: 500; letter-spacing: -.055em; line-height: 1.15; }
+      .moment-copy > p:last-child { max-width: 28em; margin: 0; color: var(--muted); font-size: clamp(15px,1.12vw,21px); line-height: 1.68; }
+      .session { position: relative; padding: 4.2vh 2.4vw 3.6vh; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+      .session time { display: block; margin-bottom: 6vh; font-family: var(--mono); font-size: clamp(11px,.9vw,17px); letter-spacing: .08em; }
+      .session blockquote { margin: 0 0 3vh; font-family: var(--serif); font-size: clamp(25px,2.25vw,43px); line-height: 1.42; }
+      .session cite { color: var(--muted); font-size: clamp(11px,.82vw,15px); font-style: normal; }
 
-      .detail { grid-column: 1 / -1; grid-row: 2; align-self: center; display: flex; align-items: center; gap: 8vw; padding: 0 8vw; }
-      .detail-observation { width: 44%; }
-      .detail h2 { max-width: 6.4em; margin-bottom: 3.2vh; font-family: var(--serif); font-size: clamp(47px, 5.7vw, 110px); font-weight: 500; letter-spacing: -.07em; line-height: 1.12; }
-      .detail p:last-child { max-width: 25em; margin: 0; color: var(--muted); font-size: clamp(16px, 1.18vw, 23px); line-height: 1.68; }
-      .cursor-field { position: relative; width: min(29vw, 560px); height: min(29vw, 560px); border: 1px solid var(--rule); border-radius: 50%; }
-      .cursor-field::before { position: absolute; top: 18%; left: 48%; width: 1px; height: 59%; background: var(--trace); transform: rotate(28deg); transform-origin: top; content: ""; }
-      .cursor-field::after { position: absolute; top: 17%; left: 47.5%; width: 9px; height: 9px; border-radius: 50%; background: var(--trace); content: ""; }
-      .cursor-field span { position: absolute; right: 8%; bottom: 13%; color: var(--muted); font-family: var(--mono); font-size: clamp(10px,.78vw,15px); letter-spacing: .06em; }
+      .detail { grid-column: 1 / -1; grid-row: 2; align-self: center; display: grid; grid-template-columns: 5fr 5fr; gap: 8vw; padding: 0 3vw 0 2vw; align-items: center; }
+      .detail h2 { max-width: 8.4em; margin-bottom: 3vh; font-family: var(--sans); font-size: clamp(42px,4vw,76px); font-weight: 500; letter-spacing: -.035em; line-height: 1.22; }
+      .detail-copy > p:last-child { max-width: 27em; margin: 0; color: var(--muted); font-size: clamp(15px,1.1vw,21px); line-height: 1.68; }
+      .workspace { position: relative; height: 43vh; border: 1px solid var(--hairline); background: rgba(250,248,243,.55); }
+      .workspace__bar { height: 9%; border-bottom: 1px solid var(--hairline); background: var(--paper-deep); }
+      .workspace__empty { position: absolute; top: 34%; left: 50%; width: 38%; height: 28%; border: 1px dashed var(--hairline); transform: translateX(-50%); }
+      .workspace__cursor { position: absolute; top: 46%; left: 62%; width: 0; height: 0; border-top: 20px solid var(--ink); border-right: 10px solid transparent; transform: rotate(-14deg); }
+      .workspace__trace { position: absolute; right: 6%; bottom: 8%; color: var(--accent); font-family: var(--mono); font-size: clamp(9px,.7vw,13px); letter-spacing: .06em; }
 
-      .reframe { grid-column: 1 / -1; grid-row: 2; align-self: center; text-align: center; }
-      .reframe h2 { max-width: 9.6em; margin: 0 auto; font-size: clamp(52px, 6.8vw, 130px); line-height: 1.15; }
-      .reframe .eyebrow { margin-bottom: 3.1vh; }
-      .reframe-note { width: 9px; height: 9px; margin: 7vh auto 0; border-radius: 50%; background: var(--trace); box-shadow: 0 0 0 18px rgba(168,99,82,.06); }
+      .reframe { grid-column: 2 / span 10; grid-row: 2; align-self: center; }
+      .reframe .eyebrow { color: #d78a73; }
+      .reframe h2 { max-width: 11.2em; margin: 0; font-family: var(--serif); font-size: clamp(52px,5.4vw,104px); font-weight: 500; letter-spacing: -.055em; line-height: 1.17; }
+      .reframe h2 span { display: inline-block; }
+      .reframe p:last-child { max-width: 30em; margin: 5vh 0 0 auto; color: rgba(243,240,233,.62); font-size: clamp(15px,1vw,19px); line-height: 1.7; }
 
-      .proposal { grid-column: 1 / -1; grid-row: 2; align-self: center; display: flex; align-items: center; gap: 7vw; padding: 0 5vw 0 2vw; }
-      .proposal-copy { width: 47%; }
-      .proposal h2 { max-width: 8em; margin-bottom: 3vh; font-family: var(--serif); font-size: clamp(41px, 4.75vw, 91px); font-weight: 500; letter-spacing: -.065em; line-height: 1.16; }
-      .proposal-copy > p:last-child { max-width: 26em; margin: 0; color: var(--muted); font-size: clamp(16px,1.16vw,22px); line-height: 1.68; }
-      .app-window { position: relative; width: min(34vw, 650px); aspect-ratio: 1.28; border: 1px solid rgba(48,47,42,.18); border-radius: 16px; background: rgba(255,255,255,.48); box-shadow: 22px 28px 48px rgba(58,50,40,.11); }
-      .app-window__bar { height: 11%; border-bottom: 1px solid rgba(48,47,42,.12); background: rgba(231,225,215,.62); border-radius: 16px 16px 0 0; }
-      .app-welcome { position: absolute; top: 22%; right: 13%; left: 13%; text-align: center; }
-      .app-welcome i { display: block; width: clamp(28px,2.2vw,44px); aspect-ratio: 1; margin: 0 auto 2.2vh; border: 1px solid var(--trace); border-radius: 50%; box-shadow: 0 0 0 13px rgba(168,99,82,.06); }
-      .app-welcome small, .app-welcome strong, .app-welcome span { display: block; }
-      .app-welcome small { margin-bottom: 1.3vh; color: var(--muted); font-size: clamp(10px,.78vw,15px); }
-      .app-welcome strong { font-family: var(--serif); font-size: clamp(22px,2vw,39px); font-weight: 500; letter-spacing: -.045em; }
-      .app-welcome p { margin: 1.6vh auto 2.2vh; color: var(--muted); font-size: clamp(11px,.9vw,17px); line-height: 1.6; }
-      .app-welcome b { display: inline-block; border-radius: 24px; padding: .9em 1.7em; background: var(--ink); color: var(--paper); font-size: clamp(11px,.85vw,16px); font-weight: 500; }
-      .app-welcome span { margin-top: 1.4vh; color: var(--trace); font-size: clamp(10px,.76vw,14px); }
+      .evidence { grid-column: 1 / -1; grid-row: 2; align-self: center; }
+      .evidence-head { display: grid; grid-template-columns: 7fr 4fr; gap: 7vw; align-items: end; margin-bottom: 6vh; }
+      .evidence h2 { max-width: 11em; margin: 0; font-size: clamp(38px,3.3vw,64px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+      .evidence-head p { margin: 0; color: var(--muted); font-size: clamp(14px,1vw,19px); line-height: 1.7; }
+      .signals { display: grid; grid-template-columns: repeat(3,1fr); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+      .signal { min-height: 29vh; padding: 3.4vh 2.4vw 3vh; border-right: 1px solid var(--hairline); }
+      .signal:last-child { border-right: 0; }
+      .signal small { color: var(--muted); font-family: var(--mono); font-size: clamp(10px,.74vw,14px); letter-spacing: .06em; }
+      .signal strong { display: block; margin: 4vh 0 1.5vh; font-family: var(--sans); font-size: clamp(54px,4.2vw,80px); font-weight: 400; font-variant-numeric: tabular-nums lining-nums; letter-spacing: -.05em; }
+      .signal:first-child strong { color: var(--accent); }
+      .signal p { max-width: 16em; margin: 0; color: var(--muted); font-size: clamp(13px,.94vw,18px); line-height: 1.6; }
 
-      .choice { grid-column: 1 / -1; grid-row: 2; align-self: center; display: flex; align-items: flex-start; gap: 9vw; padding: 0 8vw; }
-      .choice article { width: 38%; min-height: 39vh; padding-top: 2.8vh; border-top: 1px solid var(--rule); }
-      .choice article:last-child { border-top: 2px solid var(--trace); }
-      .choice small { color: var(--trace); font-family: var(--mono); font-size: clamp(10px,.8vw,15px); letter-spacing: .09em; }
-      .choice h3 { max-width: 7.2em; margin: 3.5vh 0 2.8vh; font-family: var(--serif); font-size: clamp(30px,3.35vw,64px); font-weight: 500; letter-spacing: -.06em; line-height: 1.23; }
-      .choice p { max-width: 17em; margin: 0; color: var(--muted); font-size: clamp(15px,1.1vw,21px); line-height: 1.68; }
+      .proposal { grid-column: 1 / -1; grid-row: 2; align-self: center; display: grid; grid-template-columns: 5fr 6fr; gap: 7vw; align-items: center; }
+      .proposal h2 { max-width: 9em; margin-bottom: 3vh; font-size: clamp(40px,3.7vw,71px); font-weight: 500; letter-spacing: -.03em; line-height: 1.25; }
+      .proposal-copy > p:last-child { max-width: 27em; margin: 0; color: var(--muted); font-size: clamp(15px,1.08vw,20px); line-height: 1.7; }
+      .product-state { position: relative; height: 48vh; border: 1px solid var(--hairline); background: var(--surface); box-shadow: 18px 22px 42px rgba(37,38,34,.065); }
+      .product-state__bar { height: 9%; border-bottom: 1px solid var(--hairline); background: var(--paper-deep); }
+      .product-state__body { position: absolute; inset: 9% 0 0; display: grid; place-content: center; text-align: center; }
+      .product-state__body small { color: var(--muted); }
+      .product-state__body strong { display: block; margin: 1.6vh 0 1.4vh; font-size: clamp(24px,2.15vw,41px); font-weight: 500; }
+      .product-state__body p { margin: 0 0 2.4vh; color: var(--muted); font-size: clamp(12px,.88vw,17px); }
+      .product-state__body b { display: inline-block; justify-self: center; padding: .85em 1.8em; background: var(--ink); color: var(--paper); font-size: clamp(11px,.82vw,16px); font-weight: 500; }
+      .product-state__body span { margin-top: 1.6vh; color: var(--muted); font-size: clamp(10px,.78vw,15px); }
+      .annotation { position: absolute; color: var(--accent); font-family: var(--mono); font-size: clamp(9px,.7vw,13px); letter-spacing: .04em; }
+      .annotation::before { position: absolute; top: 50%; right: calc(100% + 12px); width: 56px; border-top: 1px solid var(--accent); content: ""; }
+      .annotation--one { top: 49%; right: 4%; }
+      .annotation--two { right: 4%; bottom: 14%; }
 
-      .validate { grid-column: 2 / span 10; grid-row: 2; align-self: center; }
-      .validate h2 { max-width: 8em; margin-bottom: 7vh; font-family: var(--serif); font-size: clamp(48px,5.8vw,111px); font-weight: 500; letter-spacing: -.07em; line-height: 1.13; }
-      .path { display: flex; align-items: center; gap: 2.5vw; margin-bottom: 4.8vh; }
-      .path strong { font-family: var(--serif); font-size: clamp(34px,3.3vw,63px); font-weight: 500; letter-spacing: -.06em; }
-      .path i { color: var(--trace); font-family: var(--serif); font-size: clamp(26px,2.4vw,46px); font-style: normal; }
-      .validate > p:last-child { max-width: 35em; margin: 0; color: var(--muted); font-size: clamp(15px,1.12vw,22px); line-height: 1.68; }
+      .choice { grid-column: 2 / span 10; grid-row: 2; align-self: center; }
+      .choice h2 { margin-bottom: 5vh; font-size: clamp(38px,3.15vw,60px); font-weight: 500; letter-spacing: -.025em; }
+      .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; }
+      .choice article { min-height: 34vh; padding: 3vh 0 0; border-top: 1px solid var(--hairline); }
+      .choice article:last-child { border-top: 3px solid var(--accent); }
+      .choice small { color: var(--muted); font-family: var(--mono); font-size: clamp(10px,.76vw,14px); letter-spacing: .07em; }
+      .choice article:last-child small { color: var(--accent); }
+      .choice h3 { margin: 3.6vh 0 2.5vh; font-size: clamp(28px,2.1vw,40px); font-weight: 500; letter-spacing: -.03em; line-height: 1.35; word-break: keep-all; }
+      .choice p { max-width: 25em; margin: 0; color: var(--muted); font-size: clamp(14px,1vw,19px); line-height: 1.65; }
+      .decision-cost { margin: 4.2vh 0 0; color: var(--muted); font-size: clamp(13px,.92vw,17px); }
+      .decision-cost b { color: var(--ink); font-weight: 500; }
 
-      .closing { grid-column: 2 / span 10; grid-row: 2; align-self: center; }
-      .closing h2 { max-width: 9em; margin-bottom: 3.2vh; }
-      .closing > p:last-child { max-width: 28em; margin: 0; color: rgba(48,47,42,.7); font-size: clamp(16px,1.2vw,23px); line-height: 1.68; }
-      .close-sign { position: absolute; right: 9vw; bottom: 16vh; display: grid; place-items: center; width: min(11vw,210px); aspect-ratio: 1; border: 1px solid rgba(48,47,42,.25); border-radius: 50%; color: var(--trace); font-family: var(--mono); font-size: clamp(10px,.8vw,15px); letter-spacing: .08em; transform: rotate(9deg); }
+      .closing { grid-column: 2 / span 9; grid-row: 2; align-self: center; }
+      .closing h2 { max-width: 10em; margin-bottom: 3.3vh; font-family: var(--serif); font-size: clamp(50px,5vw,96px); font-weight: 500; letter-spacing: -.055em; line-height: 1.16; }
+      .closing > p:last-child { max-width: 30em; margin: 0; color: rgba(37,38,34,.68); font-size: clamp(15px,1.1vw,21px); line-height: 1.7; }
+      .closing-mark { position: absolute; right: 12vw; top: 45%; width: 14vw; border-top: 1px solid var(--hairline); }
+      .closing-mark::after { position: absolute; top: -5px; right: 0; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); content: ""; }
+      .closing-mark span { display: block; margin-top: 2vh; color: var(--muted); font-family: var(--mono); font-size: clamp(9px,.7vw,13px); text-align: right; }
 
       .controls { position: fixed; z-index: 5; right: 2.1vw; top: 50%; display: grid; gap: 9px; transform: translateY(-50%); }
-      .controls button { width: 8px; height: 8px; border: 1px solid rgba(48,47,42,.45); border-radius: 50%; padding: 0; background: transparent; cursor: pointer; transition: transform .2s ease, background .2s ease; }
-      .controls button[aria-current="true"] { border-color: var(--trace); background: var(--trace); transform: scale(1.45); }
-      .hint { position: fixed; z-index: 5; right: 2vw; bottom: 2.3vh; color: rgba(48,47,42,.55); font-family: var(--mono); font-size: 10px; letter-spacing: .04em; }
-      .overview { position: fixed; z-index: 8; inset: 0; display: none; padding: 6vh 6.7vw; background: rgba(244,241,234,.96); color: var(--ink); }
+      .controls button { width: 8px; height: 8px; border: 1px solid rgba(37,38,34,.42); border-radius: 50%; padding: 0; background: transparent; cursor: pointer; }
+      .controls button[aria-current="true"] { border-color: var(--accent); background: var(--accent); transform: scale(1.35); }
+      .pause-active .controls button { border-color: rgba(243,240,233,.42); }
+      .pause-active .controls button[aria-current="true"] { border-color: #d78a73; background: #d78a73; }
+      .hint { position: fixed; z-index: 5; right: 2vw; bottom: 2.3vh; color: rgba(37,38,34,.52); font-family: var(--mono); font-size: 10px; }
+      .pause-active .hint { color: rgba(243,240,233,.48); }
+      .overview { position: fixed; z-index: 8; inset: 0; display: none; padding: 6vh 6.7vw; background: rgba(243,240,233,.97); color: var(--ink); }
       .overview.is-open { display: block; }
-      .overview h2 { margin-bottom: 4vh; font-family: var(--serif); font-size: clamp(36px,4vw,76px); font-weight: 500; letter-spacing: -.06em; }
-      .overview__list { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(48,47,42,.18); }
-      .overview__list button { min-height: 18vh; border: 0; padding: 2vh 1.6vw; background: var(--paper); color: var(--ink); text-align: left; cursor: pointer; }
-      .overview__list small { display: block; margin-bottom: 2vh; color: var(--trace); font-family: var(--mono); }
-      .overview__list strong { display: block; font-family: var(--serif); font-size: clamp(20px,1.75vw,34px); font-weight: 500; line-height: 1.25; }
+      .overview h2 { margin-bottom: 4vh; font-family: var(--serif); font-size: clamp(36px,4vw,76px); font-weight: 500; }
+      .overview__list { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--hairline); }
+      .overview__list button { min-height: 19vh; border: 0; padding: 2vh 1.6vw; background: var(--paper); color: var(--ink); text-align: left; cursor: pointer; }
+      .overview__list small { display: block; margin-bottom: 2vh; color: var(--accent); font-family: var(--mono); }
+      .overview__list strong { display: block; font-family: var(--serif); font-size: clamp(18px,1.55vw,30px); font-weight: 500; line-height: 1.3; }
+      .overview [data-anim] { opacity: 1 !important; transform: none !important; }
+
+      /* Motion is progressive enhancement: content is visible until JS is ready. */
+      [data-anim] { opacity: 1; }
+      body.motion-ready [data-anim] { will-change: opacity, transform; }
+      body.static-mode [data-anim], body.reduce-motion [data-anim], body.capture-mode [data-anim] { opacity: 1 !important; transform: none !important; }
 
       @media (max-width: 760px) {
         .shell { padding: 5vh 7vw 4vh; }
-        .hero-copy, .moment, .validate, .closing { grid-column: 1 / -1; padding-left: 0; }
-        .paper-window, .hero-index, .time-mark, .close-sign { display: none; }
-        .detail, .proposal, .choice { padding-left: 0; padding-right: 0; gap: 4vw; }
-        .cursor-field { width: 31vw; height: 31vw; }
-        .proposal { gap: 4vw; }
-        .app-window { width: 45vw; }
-        .choice { gap: 5vw; }
-        .choice article { width: 47%; }
+        .hero-copy, .moment, .detail, .evidence, .proposal, .choice, .closing, .reframe { grid-column: 1 / -1; }
+        .opening-evidence, .closing-mark { display: none; }
+        .moment, .detail, .proposal { grid-template-columns: 1fr 1fr; gap: 4vw; }
+        .evidence-head { grid-template-columns: 2fr 1fr; }
         .controls, .hint { display: none; }
       }
-
-      @media (prefers-reduced-motion: reduce) { #deck, .webgl-field, .controls button { transition: none !important; } }
+      @media (prefers-reduced-motion: reduce) {
+        #deck, .light-field { transition: none !important; animation: none !important; }
+      }
+      .static-mode .light-field, .reduce-motion .light-field, .capture-mode .light-field { animation: none !important; transition: none !important; }
+      .reduce-motion #deck, .capture-mode #deck { transition: none !important; }
+      @media print {
+        [data-anim] { opacity: 1 !important; transform: none !important; }
+        .light-field { animation: none !important; }
+      }
     </style>
   </head>
   <body class="hero-active">
-    <canvas class="webgl-field" aria-hidden="true"></canvas>
+    <div class="light-field" aria-hidden="true"></div>
     <div class="static-field" aria-hidden="true"></div>
     <main id="deck" aria-label="产品设计评审：新用户空状态">
-      <section class="slide slide--hero" data-hero="true" data-sensory-task="让观众进入新用户面对空白工作台时安静却无从开始的状态" data-motion-intent="用纸面上缓慢散开的光影表现注意力尚未聚焦的状态，而非制造装饰性背景" aria-label="第 1 页：决策摘要">
+      <section class="slide slide--hero" data-hero="true" data-animate="entry" data-sensory-task="让观众进入用户第一次面对空工作台时短暂停顿的状态" data-motion-intent="用同一纸色上的低频明暗变化和依次建立的标题、证据表现注意力寻找落点，而非制造装饰性背景" aria-label="第 1 页：封面与核心判断">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">PRODUCT DESIGN REVIEW</span><span>01 / 07</span></div><span class="meta__right">NEW USER WORKSPACE</span></header>
-          <div class="hero-copy"><p class="hero-kicker">THE FIRST MOMENT OF ORIENTATION</p><h1>让空状态，<br>先给用户一个<br>可以开始的理由。</h1><p>新用户第一次打开工作台，遇见的不是“没有内容”，而是产品是否理解自己下一步要做什么。</p></div>
-          <div class="paper-window" aria-hidden="true"><i></i></div><div class="hero-index">01</div>
-          <footer class="foot"><span>← → / 滚轮 / 触摸切页</span><span>B 切换静态背景</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">PRODUCT DESIGN REVIEW</span><span>01 / 08</span></div><span class="meta__right">NEW USER WORKSPACE · 2026</span></header>
+          <div class="hero-copy"><p class="eyebrow" data-anim>THE FIRST MOMENT</p><h1 data-anim>第一次打开，<br>不该从猜测开始。</h1><p data-anim>我们重新设计的不是一个“空白页面”，而是用户判断产品是否理解自己的第一个瞬间。</p></div>
+          <aside class="opening-evidence" data-anim="evidence"><i></i><small>09:17 · FIRST OPEN</small><p>光标停在页面中央，<br>8 秒没有落点。</p></aside>
+          <footer class="foot"><span>← → / 滚轮 / 触摸切页</span><span>B 切换静态内容</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-sensory-task="让团队具体看见用户在空状态前短暂停顿的时刻" aria-label="第 2 页：用户时刻">
+      <section class="slide" data-animate="quote" data-sensory-task="用一次真实测试片段让团队看见用户停顿发生的具体时刻" aria-label="第 2 页：用户观察">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">ORDINARY OBSERVATION</span><span>02 / 07</span></div><span class="meta__right">09:17 · FIRST OPEN</span></header>
-          <div class="moment"><p class="eyebrow">THE MOMENT BEFORE ACTION</p><h2>她打开工作台，<br>却不知道第一步<br>应该是什么。</h2><p>没有项目、没有成员、没有历史记录。页面很安静；但此刻用户真正需要的，不是更多选择，而是一个可以开始的理由。</p></div><div class="time-mark" aria-hidden="true"></div>
-          <footer class="foot"><span>用户目标：创建并推进第一个项目</span><span>观察具体时刻，而非罗列功能</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">USER MOMENT</span><span>02 / 08</span></div><span class="meta__right">USABILITY SESSION 04</span></header>
+          <div class="moment"><div class="moment-copy"><p class="eyebrow" data-anim>ORDINARY OBSERVATION</p><h2 data-anim>页面很安静，<br>用户却没有开始。</h2><p data-anim>没有项目、成员或历史记录。我们原本把它理解为“无内容”，用户却把它理解为“我是不是来错了地方”。</p></div><aside class="session"><time data-anim>09:17:08 — 09:17:16</time><blockquote data-anim="line">“这里是在等别人邀请我，还是要我先建一个东西？”</blockquote><cite data-anim>新用户测试 · 第 4 位参与者</cite></aside></div>
+          <footer class="foot"><span>证据：录屏片段与现场原话</span><span>先看见时刻，再讨论界面</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-sensory-task="把用户未能行动的细节收束为可被团队感知的一次悬停" aria-label="第 3 页：被忽略的细节">
+      <section class="slide" data-animate="focus" data-sensory-task="把抽象的空状态问题收束为光标没有落点这一可观察细节" aria-label="第 3 页：细节放大">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">SMALL DETAIL</span><span>03 / 07</span></div><span class="meta__right">CURSOR WITHOUT A DESTINATION</span></header>
-          <div class="detail"><div class="detail-observation"><p class="eyebrow">A TINY PAUSE</p><h2>鼠标停住，<br>不是因为页面简洁。</h2><p>而是因为用户尚未判断：这里是让我创建项目，还是等待别人把我加进来。空白把解释成本留给了用户。</p></div><div class="cursor-field" aria-hidden="true"><span>WAITING FOR A DIRECTION</span></div></div>
-          <footer class="foot"><span>感知资源：停顿 / 不确定</span><span>一个细节，比一个抽象问题更可讨论</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">SMALL DETAIL</span><span>03 / 08</span></div><span class="meta__right">CURSOR WITHOUT A DESTINATION</span></header>
+          <div class="detail"><div class="detail-copy"><p class="eyebrow" data-anim>A TINY PAUSE</p><h2 data-anim>光标没有落点，<br>因为页面没有给出方向。</h2><p data-anim>用户不是缺少按钮，而是尚未判断：应该创建自己的项目，还是等待加入已有项目。</p></div><div class="workspace" data-anim="frame" aria-label="空工作台局部示意"><div class="workspace__bar"></div><div class="workspace__empty" data-anim="target"></div><div class="workspace__cursor" data-anim="cursor"></div><span class="workspace__trace" data-anim="trace">8 SEC · NO ACTION</span></div></div>
+          <footer class="foot"><span>感知资源：停顿 / 不确定</span><span>细节是可被讨论的证据</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-sensory-task="重新命名空状态，使后续界面取舍有一个共同的体验原则" aria-label="第 4 页：重新命名">
+      <section class="slide slide--pause" data-animate="reframe" data-sensory-task="用一次高对比停顿重新命名空状态并建立后续设计原则" aria-label="第 4 页：重新命名">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">REFRAME</span><span>04 / 07</span></div><span class="meta__right">FROM ABSENCE TO ORIENTATION</span></header>
-          <div class="reframe"><p class="eyebrow">THE DESIGN PRINCIPLE</p><h2>空状态不是没有内容。<br>它是用户第一次判断<br>产品是否理解我的地方。</h2><div class="reframe-note" aria-hidden="true"></div></div>
-          <footer class="foot"><span>先建立方向感，再要求行动</span><span>重新命名，而非追加解释</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">REFRAME</span><span>04 / 08</span></div><span class="meta__right">FROM ABSENCE TO ORIENTATION</span></header>
+          <div class="reframe"><p class="eyebrow" data-anim>THE DESIGN PRINCIPLE</p><h2><span data-anim="line">空状态不是没有内容。</span><br><span data-anim="line">它是产品第一次给予方向的地方。</span></h2><p data-anim>设计目标从“填补空白”转变为“让用户确认自己来对了，并知道下一步”。</p></div>
+          <footer class="foot"><span>先建立方向感，再要求行动</span><span>一次重构，改变后续取舍</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-sensory-task="展示一个能够给予方向感且不要求用户先学习系统的起点" aria-label="第 5 页：方案状态">
+      <section class="slide" data-animate="evidence" data-sensory-task="用三项测试信号证明方向感问题真实存在并明确后续验证基线" aria-label="第 5 页：研究证据">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">PROPOSED STATE</span><span>05 / 07</span></div><span class="meta__right">ONE CLEAR FIRST ACTION</span></header>
-          <div class="proposal"><div class="proposal-copy"><p class="eyebrow">THE FIRST INVITATION</p><h2>先给一个能完成的动作，<br>再展开完整的工作台。</h2><p>默认推荐“创建第一个项目”，并保留“加入已有项目”的次级入口。用户不需要先理解系统，才有资格开始。</p></div><div class="app-window" aria-label="空状态界面示意"><div class="app-window__bar"></div><div class="app-welcome"><i></i><small>你好，Lin</small><strong>从第一个项目开始</strong><p>创建一个项目，把想法、任务与协作放在一起。</p><b>创建项目</b><span>加入已有项目</span></div></div></div>
-          <footer class="foot"><span>一张界面，只回答一个体验问题</span><span>方案状态</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">EVIDENCE</span><span>05 / 08</span></div><span class="meta__right">6 PARTICIPANTS · PROTOTYPE TEST</span></header>
+          <div class="evidence"><div class="evidence-head"><h2 data-anim>问题不是按钮难找，<br>而是用户无法判断哪条路径属于自己。</h2><p data-anim>小样本用于识别体验模式，不作为总体转化率结论。三项信号共同指向“方向不明”，而非操作能力不足。</p></div><div class="signals"><article class="signal" data-anim="signal"><small>FIRST ACTION</small><strong>4 / 6</strong><p>首次进入后超过 5 秒没有产生任何动作。</p></article><article class="signal" data-anim="signal"><small>PATH CHOICE</small><strong>3 / 6</strong><p>询问自己应该创建项目，还是等待邀请。</p></article><article class="signal" data-anim="signal"><small>COMPREHENSION</small><strong>2 / 6</strong><p>能在无提示下正确描述自己的下一步。</p></article></div></div>
+          <footer class="foot"><span>样本只用于发现问题模式</span><span>证据 → 原则 → 方案</span></footer>
         </div>
       </section>
 
-      <section class="slide" data-sensory-task="将被选择与被放弃的方案并置，帮助团队看见体验取舍" aria-label="第 6 页：方案取舍">
+      <section class="slide" data-animate="product" data-sensory-task="展示一个只给予一个主要起点且保留次级路径的产品状态" aria-label="第 6 页：方案状态">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">TRADE-OFF</span><span>06 / 07</span></div><span class="meta__right">MAKE THE CHOICE VISIBLE</span></header>
-          <div class="choice"><article><small>不选择</small><h3>只显示空白与一个“新建”按钮</h3><p>界面很轻，但把“我应该做什么”的解释成本完全留给用户。</p></article><article><small>选择</small><h3>用一个明确起点，解释下一步的价值</h3><p>增加少量引导，但降低首次任务的犹豫与误解。</p></article></div>
-          <footer class="foot"><span>取舍应被写出来，不应隐藏在设计稿里</span><span>方案选择</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">PROPOSED STATE</span><span>06 / 08</span></div><span class="meta__right">ONE CLEAR FIRST ACTION</span></header>
+          <div class="proposal"><div class="proposal-copy"><p class="eyebrow" data-anim>THE FIRST INVITATION</p><h2 data-anim>先给一个可以完成的动作，再展开完整工作台。</h2><p data-anim>默认推荐“创建第一个项目”，同时保留“加入已有项目”的次级入口。用户不需要先理解系统，才有资格开始。</p></div><div class="product-state" data-anim="product" aria-label="新版空状态界面示意"><div class="product-state__bar"></div><div class="product-state__body"><small>你好，Lin</small><strong>从第一个项目开始</strong><p>把想法、任务与协作放在同一个地方。</p><b>创建项目</b><span>我需要加入已有项目</span></div><span class="annotation annotation--one" data-anim="annotation">PRIMARY START</span><span class="annotation annotation--two" data-anim="annotation">SECONDARY PATH</span></div></div>
+          <footer class="foot"><span>界面只回答一个体验问题</span><span>方向明确，但不封死另一条路径</span></footer>
         </div>
       </section>
 
-      <section class="slide slide--hero" data-hero="true" data-sensory-task="在结束时把设计决策落回可验证的用户行为，并留下安静的下一步" data-motion-intent="让纸面光影回到低频且近乎静止的状态，表现方向已被给出而非制造结束高潮" aria-label="第 7 页：验证与下一步">
+      <section class="slide" data-animate="decision" data-sensory-task="并置被放弃与被选择的方案并明确团队愿意接受的代价" aria-label="第 7 页：方案取舍">
         <div class="shell">
-          <header class="meta"><div class="meta__left"><span class="meta__tag">VALIDATE THE MOMENT</span><span>07 / 07</span></div><span class="meta__right">NEXT, NOT A PROMISE</span></header>
-          <div class="closing"><p class="hero-kicker">FROM EXPERIENCE TO BEHAVIOR</p><h2>确认用户能自然开始，<br>再进入开发。</h2><p>下一步制作可点击原型，观察用户是否能理解自己的第一步；再以项目创建率、首次任务完成率与“我知道下一步做什么”的测试反馈，验证这个体验原则。</p></div><div class="close-sign">TEST<br>THE<br>MOMENT</div>
-          <footer class="foot"><span>体验变化 → 首个动作 → 首次完成</span><span>07</span></footer>
+          <header class="meta"><div class="meta__left"><span class="meta__tag">DECISION</span><span>07 / 08</span></div><span class="meta__right">MAKE THE TRADE-OFF VISIBLE</span></header>
+          <div class="choice"><h2 data-anim>我们选择降低首次判断成本，而不是追求视觉上的绝对空白。</h2><div class="choice-grid"><article data-anim="left"><small>NOT SELECTED</small><h3>只显示空白与一个“新建”按钮</h3><p>界面更轻，但把“我应该做什么”的解释成本完全留给用户。</p></article><article data-anim="right"><small>SELECTED</small><h3>用一个主要起点解释下一步价值</h3><p>增加少量引导，同时降低首次任务的犹豫与路径误解。</p></article></div><p class="decision-cost" data-anim><b>接受的代价：</b>页面多一层引导文案；换取更明确的首次方向感。</p></div>
+          <footer class="foot"><span>选择与代价同时写出来</span><span>设计决策，不隐藏在稿件里</span></footer>
+        </div>
+      </section>
+
+      <section class="slide slide--hero" data-hero="true" data-animate="aftertaste" data-sensory-task="回到最初的光标时刻并留下用户能够自然开始这一验证目标" data-motion-intent="让同一纸面光线回到低频且近乎静止，并让水平线与落点最后成立，表现方向已经出现而非制造结束高潮" aria-label="第 8 页：验证与余味">
+        <div class="shell">
+          <header class="meta"><div class="meta__left"><span class="meta__tag">VALIDATE THE MOMENT</span><span>08 / 08</span></div><span class="meta__right">NEXT, NOT A PROMISE</span></header>
+          <div class="closing"><p class="eyebrow" data-anim>FROM EXPERIENCE TO BEHAVIOR</p><h2 data-anim>让光标自然落下，<br>再进入开发。</h2><p data-anim>下一轮原型只验证三件事：用户能否说出下一步、是否选择正确路径，以及能否完成第一个项目。</p></div><div class="closing-mark" data-anim="destination"><span>THE FIRST ACTION<br>HAS A DESTINATION</span></div>
+          <footer class="foot"><span>理解 → 选择 → 完成</span><span>08 / 08</span></footer>
         </div>
       </section>
     </main>
-    <nav class="controls" aria-label="页码导航"></nav><p class="hint">ESC 索引 · B 静态模式</p>
+    <nav class="controls" aria-label="页码导航"></nav>
+    <p class="hint">ESC 索引 · B 静态内容</p>
     <aside class="overview" aria-label="页面索引"><h2>索引</h2><div class="overview__list"></div></aside>
     <script>
       const slides = [...document.querySelectorAll('.slide')];
@@ -207,27 +257,193 @@
       const dots = document.querySelector('.controls');
       const overview = document.querySelector('.overview');
       const overviewList = document.querySelector('.overview__list');
-      let current = 0, wheelLock = false, touchStart = 0, staticMode = matchMedia('(prefers-reduced-motion: reduce)').matches, renderCanvas = () => {};
-      const labels = ['封面', '用户时刻', '被忽略的细节', '重新命名', '方案状态', '方案取舍', '验证与下一步'];
+      let current = 0, wheelLock = false, touchStart = 0, playTimer = 0;
+      let staticMode = false;
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      const captureMode = new URLSearchParams(location.search).has('capture');
+      const activeAnimations = new Set();
+      const MOTION = {
+        enter: 620, hero: 820, reframe: 760,
+        tight: 70, normal: 100, loose: 150,
+        offsetX: 12, offsetY: 10,
+        playDelay: 300,
+        ease: 'cubic-bezier(.22,1,.36,1)'
+      };
+      const labels = ['封面与判断', '用户观察', '细节放大', '重新命名', '研究证据', '方案状态', '方案取舍', '验证与余味'];
+      deck.style.width = `${slides.length * 100}vw`;
       const total = String(slides.length).padStart(2, '0');
       slides.forEach((slide, index) => {
-        const dot = document.createElement('button'); dot.type = 'button'; dot.ariaLabel = `跳到第 ${index + 1} 页`; dot.addEventListener('click', () => show(index)); dots.append(dot);
-        const item = document.createElement('button'); item.type = 'button'; item.innerHTML = `<small>${String(index + 1).padStart(2, '0')} / ${total}</small><strong>${labels[index]}</strong>`; item.addEventListener('click', () => { overview.classList.remove('is-open'); show(index); }); overviewList.append(item);
+        const dot = document.createElement('button');
+        dot.type = 'button'; dot.ariaLabel = `跳到第 ${index + 1} 页`; dot.addEventListener('click', () => show(index)); dots.append(dot);
+        const item = document.createElement('button');
+        item.type = 'button'; item.innerHTML = `<small>${String(index + 1).padStart(2, '0')} / ${total}</small><strong>${labels[index]}</strong>`;
+        item.addEventListener('click', () => { overview.classList.remove('is-open'); show(index); }); overviewList.append(item);
       });
-      function show(index) { current = Math.max(0, Math.min(index, slides.length - 1)); deck.style.transform = `translateX(${-current * 100}vw)`; slides.forEach((slide, i) => slide.setAttribute('aria-current', i === current ? 'page' : 'false')); [...dots.children].forEach((dot, i) => dot.setAttribute('aria-current', String(i === current))); const hero = slides[current].dataset.hero === 'true'; document.body.classList.toggle('hero-active', hero); history.replaceState(null, '', `#${current + 1}`); }
+      function motionDisabled() { return staticMode || reducedMotion.matches || captureMode || !Element.prototype.animate; }
+      function cancelMotion() {
+        clearTimeout(playTimer);
+        activeAnimations.forEach(animation => animation.cancel());
+        activeAnimations.clear();
+      }
+      function finalState(slide) {
+        slide.querySelectorAll('[data-anim]').forEach(element => {
+          element.style.opacity = '1';
+          element.style.transform = 'none';
+        });
+      }
+      function prepareSlide(slide) {
+        if (motionDisabled()) { finalState(slide); return; }
+        slide.querySelectorAll('[data-anim]').forEach(element => {
+          element.style.opacity = '0';
+          element.style.transform = 'none';
+        });
+      }
+      function animateElement(element, keyframes, options = {}) {
+        const animation = element.animate(keyframes, {
+          duration: options.duration ?? MOTION.enter,
+          delay: options.delay ?? 0,
+          easing: options.easing ?? MOTION.ease,
+          fill: 'both'
+        });
+        activeAnimations.add(animation);
+        animation.finished.then(() => {
+          activeAnimations.delete(animation);
+          element.style.opacity = '1';
+          element.style.transform = 'none';
+          animation.cancel();
+        }).catch(() => activeAnimations.delete(animation));
+        return animation;
+      }
+      function fadeUp(element, delay = 0, options = {}) {
+        return animateElement(element, [
+          { opacity: 0, transform: `translateY(${options.y ?? MOTION.offsetY}px)` },
+          { opacity: 1, transform: 'translateY(0)' }
+        ], { delay, duration: options.duration });
+      }
+      function fadeSide(element, from, delay = 0, options = {}) {
+        return animateElement(element, [
+          { opacity: 0, transform: `translateX(${from}px)` },
+          { opacity: 1, transform: 'translateX(0)' }
+        ], { delay, duration: options.duration });
+      }
+      function playSlide(index) {
+        const slide = slides[index];
+        if (!slide) return;
+        if (motionDisabled()) { finalState(slide); return; }
+        const recipe = slide.dataset.animate || 'cascade';
+        const all = [...slide.querySelectorAll('[data-anim]')];
+        if (!all.length) return;
+
+        if (recipe === 'entry') {
+          const copy = all.filter(el => !['evidence'].includes(el.dataset.anim));
+          copy.forEach((el, i) => fadeUp(el, 40 + i * MOTION.loose, { duration: MOTION.hero }));
+          const evidence = all.find(el => el.dataset.anim === 'evidence');
+          if (evidence) fadeSide(evidence, 14, 560, { duration: 720 });
+          return;
+        }
+        if (recipe === 'quote') {
+          const line = all.find(el => el.dataset.anim === 'line');
+          all.filter(el => el !== line).forEach((el, i) => fadeUp(el, i * MOTION.normal));
+          if (line) fadeUp(line, 430, { y: 6, duration: 760 });
+          return;
+        }
+        if (recipe === 'focus') {
+          const copy = all.filter(el => !el.dataset.anim);
+          copy.forEach((el, i) => fadeUp(el, i * MOTION.normal));
+          const frame = all.find(el => el.dataset.anim === 'frame');
+          const target = all.find(el => el.dataset.anim === 'target');
+          const cursor = all.find(el => el.dataset.anim === 'cursor');
+          const trace = all.find(el => el.dataset.anim === 'trace');
+          if (frame) animateElement(frame, [{opacity:0},{opacity:1}], {delay:260,duration:560});
+          if (target) animateElement(target, [{opacity:0},{opacity:1}], {delay:520,duration:520});
+          if (cursor) animateElement(cursor, [{opacity:0,transform:'translate(7px,9px) rotate(-14deg)'},{opacity:1,transform:'translate(0,0) rotate(-14deg)'}], {delay:700,duration:680});
+          if (trace) fadeUp(trace, 980, {y:5,duration:520});
+          return;
+        }
+        if (recipe === 'reframe') {
+          const lines = all.filter(el => el.dataset.anim === 'line');
+          const others = all.filter(el => el.dataset.anim !== 'line');
+          others.forEach((el, i) => fadeUp(el, i === 0 ? 0 : 620, {y:6,duration:MOTION.reframe}));
+          lines.forEach((el, i) => fadeUp(el, 170 + i * 210, {y:7,duration:MOTION.reframe}));
+          return;
+        }
+        if (recipe === 'evidence') {
+          const head = all.filter(el => el.dataset.anim !== 'signal');
+          const signals = all.filter(el => el.dataset.anim === 'signal');
+          head.forEach((el, i) => fadeUp(el, i * 120));
+          signals.forEach((el, i) => {
+            animateElement(el, [{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}], {delay:320+i*130,duration:620});
+            const number = el.querySelector('strong');
+            if (number) animateElement(number, [{opacity:0,transform:'scale(.94)'},{opacity:1,transform:'scale(1)'}], {delay:440+i*130,duration:620});
+          });
+          return;
+        }
+        if (recipe === 'product') {
+          const copy = all.filter(el => !el.dataset.anim);
+          copy.forEach((el, i) => fadeUp(el, i * MOTION.normal));
+          const product = all.find(el => el.dataset.anim === 'product');
+          if (product) animateElement(product, [{opacity:0,transform:'scale(.985)'},{opacity:1,transform:'scale(1)'}], {delay:300,duration:720});
+          all.filter(el => el.dataset.anim === 'annotation').forEach((el, i) => fadeSide(el, -18, 700+i*180, {duration:580}));
+          return;
+        }
+        if (recipe === 'decision') {
+          const title = all.find(el => !el.dataset.anim);
+          const left = all.find(el => el.dataset.anim === 'left');
+          const right = all.find(el => el.dataset.anim === 'right');
+          const cost = all.filter(el => !el.dataset.anim)[1];
+          if (title) fadeUp(title, 0);
+          if (left) fadeSide(left, -MOTION.offsetX, 250, {duration:680});
+          if (right) fadeSide(right, MOTION.offsetX, 470, {duration:680});
+          if (cost) fadeUp(cost, 820, {y:6,duration:560});
+          return;
+        }
+        if (recipe === 'aftertaste') {
+          const destination = all.find(el => el.dataset.anim === 'destination');
+          all.filter(el => el !== destination).forEach((el, i) => fadeUp(el, 80+i*MOTION.loose, {y:7,duration:MOTION.hero}));
+          if (destination) fadeSide(destination, -18, 640, {duration:900});
+          return;
+        }
+        all.forEach((el, i) => fadeUp(el, i * MOTION.normal));
+      }
+      function updateMotionMode() {
+        document.body.classList.toggle('static-mode', staticMode);
+        document.body.classList.toggle('reduce-motion', reducedMotion.matches);
+        document.body.classList.toggle('capture-mode', captureMode);
+        if (motionDisabled()) { cancelMotion(); finalState(slides[current]); }
+        else { prepareSlide(slides[current]); playSlide(current); }
+      }
+      function show(index, initial = false) {
+        const next = Math.max(0, Math.min(index, slides.length - 1));
+        cancelMotion();
+        finalState(slides[current]);
+        prepareSlide(slides[next]);
+        current = next;
+        deck.style.transform = `translateX(${-current * 100}vw)`;
+        slides.forEach((slide, i) => slide.setAttribute('aria-current', i === current ? 'page' : 'false'));
+        [...dots.children].forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
+        document.body.classList.toggle('hero-active', slides[current].dataset.hero === 'true');
+        document.body.classList.toggle('pause-active', slides[current].classList.contains('slide--pause'));
+        history.replaceState(null, '', `#${current + 1}`);
+        playTimer = setTimeout(() => playSlide(current), initial ? 40 : MOTION.playDelay);
+      }
       function move(delta) { show(current + delta); }
-      addEventListener('keydown', event => { if (event.key === 'ArrowRight' || event.key === ' ') move(1); if (event.key === 'ArrowLeft') move(-1); if (event.key === 'Escape') overview.classList.toggle('is-open'); if (event.key.toLowerCase() === 'b') { staticMode = !staticMode; document.body.classList.toggle('no-motion', staticMode); if (!staticMode) renderCanvas(performance.now()); } });
-      addEventListener('wheel', event => { if (wheelLock || Math.abs(event.deltaY) < 24) return; wheelLock = true; move(event.deltaY > 0 ? 1 : -1); setTimeout(() => wheelLock = false, 780); }, { passive: true });
-      addEventListener('touchstart', event => touchStart = event.changedTouches[0].screenX, { passive: true }); addEventListener('touchend', event => { const delta = event.changedTouches[0].screenX - touchStart; if (Math.abs(delta) > 48) move(delta < 0 ? 1 : -1); }, { passive: true });
-      const initial = Number(location.hash.slice(1)) - 1; show(Number.isInteger(initial) ? initial : 0); document.body.classList.toggle('no-motion', staticMode);
-      const canvas = document.querySelector('.webgl-field'); const gl = canvas.getContext('webgl', { alpha: false, antialias: false });
-      if (gl) {
-        const vert = 'attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}';
-        const frag = 'precision mediump float; uniform vec2 r; uniform float t; void main(){vec2 uv=gl_FragCoord.xy/r; vec2 p=(uv-.5)*2.; float wave=sin(p.x*1.25+t*.045)+sin(p.y*1.05-t*.032)+sin((p.x-p.y)*1.4+t*.025); float soft=smoothstep(-1.35,1.75,wave); vec3 shadow=vec3(.76,.73,.67); vec3 paper=vec3(.95,.94,.90); vec3 light=vec3(1.0,.995,.97); vec3 trace=vec3(.66,.39,.32); vec3 col=mix(shadow,paper,soft*.72); col=mix(col,light,smoothstep(.72,1.85,wave)*.35); col=mix(col,trace,smoothstep(2.0,2.72,wave)*.10); gl_FragColor=vec4(col,1.);}';
-        const compile = (type, source) => { const shader = gl.createShader(type); gl.shaderSource(shader, source); gl.compileShader(shader); return shader; }; const program = gl.createProgram(); gl.attachShader(program, compile(gl.VERTEX_SHADER, vert)); gl.attachShader(program, compile(gl.FRAGMENT_SHADER, frag)); gl.linkProgram(program); gl.useProgram(program); const buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW); const pos = gl.getAttribLocation(program,'p'); gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0); const res = gl.getUniformLocation(program,'r'); const time = gl.getUniformLocation(program,'t');
-        function render(ms) { const dpr = Math.min(devicePixelRatio, 1.5); const w = innerWidth*dpr, h = innerHeight*dpr; if(canvas.width!==w || canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);} gl.uniform2f(res,w,h); gl.uniform1f(time,ms*.001); gl.drawArrays(gl.TRIANGLES,0,6); if(!staticMode) requestAnimationFrame(render); }
-        renderCanvas = render; requestAnimationFrame(render);
-      } else { document.body.classList.add('no-motion'); }
+      addEventListener('keydown', event => {
+        if (event.key === 'ArrowRight' || event.key === ' ') move(1);
+        if (event.key === 'ArrowLeft') move(-1);
+        if (event.key === 'Escape') overview.classList.toggle('is-open');
+        if (event.key.toLowerCase() === 'b') { staticMode = !staticMode; updateMotionMode(); }
+      });
+      addEventListener('wheel', event => {
+        if (wheelLock || Math.abs(event.deltaY) < 24) return;
+        wheelLock = true; move(event.deltaY > 0 ? 1 : -1); setTimeout(() => wheelLock = false, 760);
+      }, { passive: true });
+      addEventListener('touchstart', event => touchStart = event.changedTouches[0].screenX, { passive: true });
+      addEventListener('touchend', event => { const delta = event.changedTouches[0].screenX - touchStart; if (Math.abs(delta) > 48) move(delta < 0 ? 1 : -1); }, { passive: true });
+      reducedMotion.addEventListener?.('change', updateMotionMode);
+      const initial = Number(location.hash.slice(1)) - 1;
+      document.body.classList.add('motion-ready');
+      updateMotionMode();
+      show(Number.isInteger(initial) ? initial : 0, true);
     </script>
   </body>
 </html>

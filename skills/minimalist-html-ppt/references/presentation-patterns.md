@@ -57,6 +57,16 @@ html { font-synthesis: none; }
 
 Use only actual 400, 500, and 600 faces. The font list is a fallback stack, not a recommendation to fetch every family from the network. Replace it with local licensed fonts when the project provides them. Put a cover title in columns 1–8, a standard assertion title in columns 1–9, and a metric's explanation in a separate 4-column region rather than stacking it under the number.
 
+## Semantic font roles
+
+| Content role | Family | Notes |
+| --- | --- | --- |
+| Entry, human utterance, reframe, aftertaste | Serif display | Use for a small number of phrases that need observation or pause. |
+| Analysis, evidence, product, metrics, comparison, decision, validation | Sans | Keep working pages rational, scannable, and consistent with interface evidence. |
+| Page number, time, category, sample, method metadata | Mono | Keep short; do not use for paragraphs or decorative pseudo-technical copy. |
+
+Use tabular lining figures for metrics and keep them in the sans system. A user quotation may be serif while its research explanation remains sans. Avoid two large serif focal points on the same slide, random per-page family changes, and a fourth font used only to make English look premium.
+
 ## Visual quality checklist
 
 Check every slide at the final 16:9 display size:
@@ -69,3 +79,6 @@ Check every slide at the final 16:9 display size:
 6. Check that Chinese, Latin, punctuation, and digits wrap intentionally.
 7. Check that motion preserves meaning rather than being required to understand the page.
 8. Check screenshot and PDF renderings after fonts are fully ready.
+9. If the page moves internally, name the reading sequence and confirm the recipe differs from adjacent pages when their semantic tasks differ.
+10. Confirm every animated element is visible in static-content, reduced-motion, overview, capture, print, and animation-failure states.
+11. Confirm serif, sans, and mono roles follow content semantics rather than page-by-page decoration; metrics, interfaces, comparisons, and decisions should remain in the sans system.
