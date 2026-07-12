@@ -53,10 +53,8 @@
       .shell { position: relative; z-index: 1; display: grid; width: 100%; height: 100%; padding: 5.7vh 6.7vw 4.7vh; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 1.45vw; }
       .meta { display: flex; grid-column: 1 / -1; grid-row: 1; align-items: baseline; justify-content: space-between; font-family: var(--mono); font-size: clamp(10px,.74vw,14px); letter-spacing: .045em; line-height: 1.35; }
       .meta__left { display: flex; align-items: baseline; gap: 1.6em; }
-      .meta__tag { color: var(--accent); }
-      .meta__right, .foot { color: var(--muted); }
-      .slide--pause .meta__tag { color: #d78a73; }
-      .slide--pause .meta__right, .slide--pause .foot { color: rgba(243,240,233,.52); }
+      .meta__tag, .meta__right, .foot { color: var(--muted); }
+      .slide--pause .meta__tag, .slide--pause .meta__right, .slide--pause .foot { color: rgba(243,240,233,.52); }
       .foot { display: flex; grid-column: 1 / -1; grid-row: 3; align-items: flex-end; justify-content: space-between; font-family: var(--mono); font-size: clamp(9px,.65vw,12px); letter-spacing: .035em; line-height: 1.4; }
       h1, h2, h3, p, blockquote { margin-top: 0; }
       .eyebrow { margin: 0 0 2.4vh; color: var(--accent); font-family: var(--mono); font-size: clamp(10px,.78vw,15px); letter-spacing: .09em; }
@@ -85,6 +83,28 @@
       .workspace__empty { position: absolute; top: 34%; left: 50%; width: 38%; height: 28%; border: 1px dashed var(--hairline); transform: translateX(-50%); }
       .workspace__cursor { position: absolute; top: 46%; left: 62%; width: 0; height: 0; border-top: 20px solid var(--ink); border-right: 10px solid transparent; transform: rotate(-14deg); }
       .workspace__trace { position: absolute; right: 6%; bottom: 8%; color: var(--accent); font-family: var(--mono); font-size: clamp(9px,.7vw,13px); letter-spacing: .06em; }
+
+      .template-demo { height: 47vh; background: rgba(250,248,243,.72); }
+      .template-demo__stage { position: absolute; inset: 15% 7% 17%; display: grid; grid-template-rows: repeat(3,1fr); gap: 1.2vh; }
+      .template-row { position: relative; display: grid; grid-template-columns: 1.05fr 1.45fr 1.45fr; gap: .7vw; align-items: stretch; padding: 1.15vh .9vw; border: 1px solid var(--hairline); background: rgba(243,240,233,.68); }
+      .template-row::before { position: absolute; top: 50%; left: -3.8%; width: 3.8%; border-top: 1px solid var(--hairline); content: ""; }
+      .template-row__task { align-self: center; color: var(--ink); font-family: var(--mono); font-size: clamp(8px,.59vw,11px); letter-spacing: .055em; line-height: 1.35; }
+      .template-row__cell { position: relative; border-left: 1px solid var(--hairline); }
+      .template-row__cell::before, .template-row__cell::after { position: absolute; left: 14%; height: 1px; background: rgba(37,38,34,.23); content: ""; }
+      .template-row__cell::before { top: 34%; width: 67%; }
+      .template-row__cell::after { top: 60%; width: 48%; }
+      .template-row__cell:last-child::after { width: 62%; }
+      .template-demo__rail { position: absolute; top: 19%; bottom: 22%; left: 4.1%; border-left: 1px solid var(--hairline); }
+      .template-demo__rail i { position: absolute; left: -4px; width: 7px; height: 7px; border: 1px solid var(--muted); border-radius: 50%; background: var(--paper); }
+      .template-demo__rail i:nth-child(1) { top: 8%; }
+      .template-demo__rail i:nth-child(2) { top: 48%; }
+      .template-demo__rail i:nth-child(3) { top: 88%; }
+      .template-demo__scan { position: absolute; z-index: 2; top: 66%; left: 80%; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px rgba(166,83,63,.10); }
+      .template-demo__path { position: absolute; z-index: 1; inset: 18% 10% 24% 25%; overflow: visible; }
+      .template-demo__path path { fill: none; stroke: var(--accent); stroke-width: 1.1; stroke-dasharray: 4 5; opacity: .46; }
+      .template-demo__diagnosis { position: absolute; right: 6%; bottom: 7%; display: flex; align-items: baseline; gap: 1em; font-family: var(--mono); font-size: clamp(8px,.62vw,12px); letter-spacing: .06em; }
+      .template-demo__diagnosis span:first-child { color: var(--muted); }
+      .template-demo__diagnosis strong { color: var(--accent); font-weight: 500; }
 
       .reframe { grid-column: 2 / span 10; grid-row: 2; align-self: center; }
       .reframe .eyebrow { color: #d78a73; }
@@ -164,8 +184,6 @@
       .controls button[aria-current="true"] { border-color: var(--accent); background: var(--accent); transform: scale(1.35); }
       .pause-active .controls button { border-color: rgba(243,240,233,.42); }
       .pause-active .controls button[aria-current="true"] { border-color: #d78a73; background: #d78a73; }
-      .hint { position: fixed; z-index: 5; right: 2vw; bottom: 2.3vh; color: rgba(37,38,34,.52); font-family: var(--mono); font-size: 10px; }
-      .pause-active .hint { color: rgba(243,240,233,.48); }
       .overview { position: fixed; z-index: 8; inset: 0; display: none; padding: 6vh 6.7vw; background: rgba(243,240,233,.97); color: var(--ink); }
       .overview.is-open { display: block; }
       .overview h2 { margin-bottom: 4vh; font-family: var(--serif); font-size: clamp(36px,4vw,76px); font-weight: 500; }
@@ -186,7 +204,7 @@
         .opening-evidence, .closing-mark { display: none; }
         .moment, .detail, .proposal { grid-template-columns: 1fr 1fr; gap: 4vw; }
         .evidence-head { grid-template-columns: 2fr 1fr; }
-        .controls, .hint { display: none; }
+        .controls { display: none; }
       }
       @media (prefers-reduced-motion: reduce) {
         #deck, .light-field { transition: none !important; animation: none !important; }
@@ -208,7 +226,7 @@
           <header class="meta"><div class="meta__left"><span class="meta__tag">MY RED SKILL</span><span>01 / 12</span></div><span class="meta__right">MINIMALIST HTML PPT · 2026</span></header>
           <div class="hero-copy"><p class="eyebrow" data-anim>FROM A METHOD TO A SKILL</p><h1 data-anim>我把一套<br>做 PPT 的方法，<br>装进了一个 Skill。</h1><p data-anim>它不替你把文字塞进模板；它先理解故事，再决定每一页应该让观众看见什么。</p></div>
           <aside class="opening-evidence" data-anim="evidence"><i></i><small>AVAILABLE IN THIS NOTE</small><p>一个 ZIP，<br>交给 Agent 直接使用。</p></aside>
-          <footer class="foot"><span>← → / 滚轮 / 触摸切页</span><span>B 切换静态内容</span></footer>
+          <footer class="foot"><span>← → / 滚轮 / 触摸切页 · ESC 索引 · B 静态内容</span><span>单文件 HTML · 直接打开</span></footer>
         </div>
       </section>
 
@@ -223,7 +241,7 @@
       <section class="slide" data-animate="focus" data-sensory-task="把 AI PPT 的问题从不好看收束为每一页没有明确认知任务" aria-label="第 3 页：问题细节">
         <div class="shell">
           <header class="meta"><div class="meta__left"><span class="meta__tag">THE MISSED DETAIL</span><span>03 / 12</span></div><span class="meta__right">A DECK WITHOUT A READING PATH</span></header>
-          <div class="detail"><div class="detail-copy"><p class="eyebrow" data-anim>NOT A STYLE PROBLEM</p><h2 data-anim>真正缺的，<br>不是另一套模板。</h2><p data-anim>而是有人先决定：这一页建立情境、提出判断、给出证据，还是让团队做选择。</p></div><div class="workspace" data-anim="frame" aria-label="重复模板页面示意"><div class="workspace__bar"></div><div class="workspace__empty" data-anim="target"></div><div class="workspace__cursor" data-anim="cursor"></div><span class="workspace__trace" data-anim="trace">SAME LAYOUT · NEW COPY</span></div></div>
+          <div class="detail"><div class="detail-copy"><p class="eyebrow" data-anim>NOT A STYLE PROBLEM</p><h2 data-anim>真正缺的，<br>不是另一套模板。</h2><p data-anim>而是有人先决定：这一页建立情境、提出判断、给出证据，还是让团队做选择。</p></div><div class="workspace template-demo" data-anim="frame" aria-label="三种不同内容被放进相同版式，导致阅读路径不明确的示意"><div class="workspace__bar"></div><div class="template-demo__rail" data-anim="rail"><i></i><i></i><i></i></div><div class="template-demo__stage"><div class="template-row" data-anim="template"><span class="template-row__task">PRODUCT<br>UPDATE</span><i class="template-row__cell"></i><i class="template-row__cell"></i></div><div class="template-row" data-anim="template"><span class="template-row__task">USER<br>RESEARCH</span><i class="template-row__cell"></i><i class="template-row__cell"></i></div><div class="template-row" data-anim="template"><span class="template-row__task">DESIGN<br>REVIEW</span><i class="template-row__cell"></i><i class="template-row__cell"></i></div></div><svg class="template-demo__path" data-anim="path" viewBox="0 0 420 190" aria-hidden="true"><path pathLength="1" d="M34 18 C148 6 264 42 204 82 S72 104 148 136 S314 154 366 113" /></svg><i class="template-demo__scan" data-anim="scan"></i><div class="template-demo__diagnosis" data-anim="diagnosis"><span>SAME LAYOUT × 3 TASKS</span><strong>NO READING PATH</strong></div></div></div>
           <footer class="foot"><span>普通对象：一张空白幻灯片</span><span>被忽略的细节：阅读顺序</span></footer>
         </div>
       </section>
@@ -285,7 +303,6 @@
       </section>
     </main>
     <nav class="controls" aria-label="页码导航"></nav>
-    <p class="hint">ESC 索引 · B 静态内容</p>
     <aside class="overview" aria-label="页面索引"><h2>索引</h2><div class="overview__list"></div></aside>
     <script>
       const slides = [...document.querySelectorAll('.slide')];
@@ -387,6 +404,30 @@
           const copy = all.filter(el => !el.dataset.anim);
           copy.forEach((el, i) => fadeUp(el, i * MOTION.normal));
           const frame = all.find(el => el.dataset.anim === 'frame');
+          const templateDemo = slide.querySelector('.template-demo');
+          if (templateDemo) {
+            const templates = all.filter(el => el.dataset.anim === 'template');
+            const rail = all.find(el => el.dataset.anim === 'rail');
+            const path = all.find(el => el.dataset.anim === 'path');
+            const scan = all.find(el => el.dataset.anim === 'scan');
+            const diagnosis = all.find(el => el.dataset.anim === 'diagnosis');
+            if (frame) animateElement(frame, [{opacity:0,transform:'scale(.985)'},{opacity:1,transform:'scale(1)'}], {delay:220,duration:620});
+            if (rail) animateElement(rail, [{opacity:0,transform:'scaleY(.2)'},{opacity:1,transform:'scaleY(1)'}], {delay:420,duration:620});
+            templates.forEach((el, i) => animateElement(el, [{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}], {delay:500+i*210,duration:600}));
+            if (path) animateElement(path, [{opacity:0},{opacity:1}], {delay:1120,duration:520});
+            const pathLine = path?.querySelector('path');
+            if (pathLine) animateElement(pathLine, [{strokeDashoffset:1},{strokeDashoffset:0}], {delay:1120,duration:1100,easing:'cubic-bezier(.45,0,.2,1)'});
+            if (scan) animateElement(scan, [
+              {opacity:0,transform:'translate(-250px,-145px)'},
+              {opacity:1,transform:'translate(-250px,-145px)',offset:.10},
+              {opacity:1,transform:'translate(-95px,-122px)',offset:.38},
+              {opacity:1,transform:'translate(-190px,-60px)',offset:.62},
+              {opacity:1,transform:'translate(-58px,-16px)',offset:.82},
+              {opacity:1,transform:'translate(0,0)'}
+            ], {delay:1120,duration:1200,easing:'cubic-bezier(.45,0,.2,1)'});
+            if (diagnosis) fadeUp(diagnosis, 2060, {y:5,duration:560});
+            return;
+          }
           const target = all.find(el => el.dataset.anim === 'target');
           const cursor = all.find(el => el.dataset.anim === 'cursor');
           const trace = all.find(el => el.dataset.anim === 'trace');
