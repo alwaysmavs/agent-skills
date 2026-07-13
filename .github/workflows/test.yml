@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 22
       - name: Validate the bundled template
-        run: node skills/minimalist-html-ppt/scripts/check-editorial-deck.mjs skills/minimalist-html-ppt/assets/editorial-web-deck/template.html
+        run: node skills/minimalist-html-ppt/scripts/check-editorial-deck.js skills/minimalist-html-ppt/assets/editorial-web-deck/template.html
   video-subtitle-translator:
     runs-on: ubuntu-latest
     steps:
