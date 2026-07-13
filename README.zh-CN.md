@@ -17,7 +17,7 @@
 | Skill | 能力简介 | 环境要求 |
 | --- | --- | --- |
 | [`video-subtitle-translator`](skills/video-subtitle-translator/) | [基于 oo CLI 构建](https://oomol.com)：使用阿里 Qwen ASR 转写，生成带时间轴的字幕、翻译、优化中日韩字幕换行，并导出硬字幕或软字幕。 [English](skills/video-subtitle-translator/README.md) · [简体中文](skills/video-subtitle-translator/README.zh-CN.md) | Node.js 18+、FFmpeg、[oo CLI](https://oomol.com)、Fusion ASR 与 OO LLM 权限 |
-| [`mucha-gpt-image-studio`](skills/mucha-gpt-image-studio/) | 使用 GPT Image 2 创作穆夏灵感的新艺术风头像、宠物肖像、海报、菜单、邀请函、背景图和壁纸；支持根据人物、宠物或物品照片进行艺术化转换。 [English](skills/mucha-gpt-image-studio/README.md) · [简体中文](skills/mucha-gpt-image-studio/README.zh-CN.md) | [oo CLI](https://oomol.com) 与 `gpt-image-2` 配套 skill |
+| [`mucha-gpt-image-studio`](skills/mucha-gpt-image-studio/) | 创作穆夏灵感的新艺术风头像、宠物肖像、海报、菜单、邀请函、背景图和壁纸；支持根据人物、宠物或物品照片进行艺术化转换。 [English](skills/mucha-gpt-image-studio/README.md) · [简体中文](skills/mucha-gpt-image-studio/README.zh-CN.md) | Agent 自带图片工具，或 [oo CLI](https://oomol.com) 与 `gpt-image-2` 配套 skill |
 | [`minimalist-html-ppt`](skills/minimalist-html-ppt/) | 创建可直接打开、单文件交付的 HTML PPT，适合产品与设计评审；强调克制排版、留白、语义动效，以及从观察到重新命名的叙事方法。 | 现代浏览器；仅在运行可选检查脚本时需要 Node.js 18+ |
 
 查看 [视频字幕生成器中文说明](skills/video-subtitle-translator/README.zh-CN.md)，或阅读 [English overview](skills/video-subtitle-translator/README.md)，了解完整流程、支持语言、格式和交付方式。skill 的 README 内保留完整的多语言说明，包括日文版本。

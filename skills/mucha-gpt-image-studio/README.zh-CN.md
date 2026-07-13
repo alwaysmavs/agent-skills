@@ -6,7 +6,7 @@
 
 **把一个创意，或一张珍爱的照片，变成具有阿尔丰斯·穆夏灵感的新艺术风格作品。**
 
-`mucha-gpt-image-studio` 是一个 Agent Skill，用 GPT Image 2 生成精致的穆夏风头像、宠物海报、邀请函插画、菜单装饰框、朋友圈背景图、壁纸和其他装饰性图片。它负责审美与构图决策，并将生成、改图、上传、恢复任务和下载成品交给配套的 `gpt-image-2` Skill。
+`mucha-gpt-image-studio` 是一个用于生成精致穆夏风头像、宠物海报、邀请函插画、菜单装饰框、朋友圈背景图、壁纸和其他装饰性图片的 Agent Skill。它的核心是审美与构图约束；执行时既可以使用 Agent 自带的图片工具，也可以使用 OOMOL 提供的可恢复 GPT Image 2 工作流。
 
 ## 看看实际效果
 
@@ -58,24 +58,38 @@
 
 Skill 使用 `mucha-pet-poster`、`mucha-profile-portrait`、`mucha-menu-frame`、`mucha-event-poster`、`mucha-social-background`、`mucha-seasonal-card` 等创作原型，让每种成品都有对应构图，而不是只在提示词后面追加“穆夏风”。
 
-### 4. 交付真正可用的图片文件
+### 4. 优先使用当前环境已有的图片能力
 
-配套 runner 会保存可恢复的 session 文件，轮询同一个生成任务，下载成品，并返回本地路径与远端 URL。任务意外中断时，它会恢复已有 session，不会直接再提交一笔重复的付费生成任务。
+已经安装 OOMOL 时，Skill 使用可恢复的 GPT Image 2 runner；没有安装 OOMOL、但 Agent 自带图片生成或编辑工具时，直接使用原生工具，不额外引入依赖。只有两种能力都不存在时，才进入 OOMOL 引导安装。
 
-## 环境要求
+## 两条执行路径
 
-- 已认证且可访问 Fusion API 的 [oo CLI](https://oomol.com)。
-- 当前 Agent 的 skills 目录中已安装 `gpt-image-2` 配套 Skill；它提供 GPT Image 2 生成与编辑所需的确定性 runner。
-- 可访问图片生成和下载服务的网络连接。
+- **已安装 OOMOL：** 使用已认证的 `oo` CLI 和 `gpt-image-2` 配套 Skill，负责上传、生成、轮询、恢复和下载。
+- **未安装 OOMOL：** 优先使用 Agent 自带的图片生成或编辑工具，不要求用户安装 OOMOL。
+- **两者都不可用：** Agent 简要说明缺少图片执行能力，再提供 OOMOL 官方安装引导，并在安装后继续用户原来的创作需求。
 
 不要把 API Key 写入 Skill 或提交到仓库。
+
+## 小红书 RED Skill 上传
+
+根据上传页显示的白名单，当前 Skill 不需要转换代码。上传包包含主 Skill 和两个按运行时分开的 Markdown reference：
+
+```text
+mucha-gpt-image-studio/
+├── SKILL.md
+└── references/
+    ├── native-image-runtime.md
+    └── oomol-runtime.md
+```
+
+OOMOL 路径使用普通的 `scripts/run_image.js`，不需要 `.mjs`。仓库中的 PNG 示例和 `agents/openai.yaml` 不放进上传包。
 
 ## 让 Agent 安装
 
 将以下请求复制给你的 Agent：
 
 ```text
-请将 https://github.com/alwaysmavs/agent-skills 中的 mucha-gpt-image-studio skill 安装到我当前 Agent 的 skills 目录。同时确认 gpt-image-2 配套 skill 已安装，并检查已认证的 oo CLI 能否访问 Fusion API 图片生成。请遵循 SKILL.md：如果我提供人物或宠物照片，应尽量保留主体特征；图片应保存到与无关仓库分离的位置；最后请展示最终图片，而不是只报一个本地路径。
+请将 https://github.com/alwaysmavs/agent-skills 中的 mucha-gpt-image-studio skill 安装到我当前 Agent 的 skills 目录，并遵循 SKILL.md 选择当前可用的运行方式：已安装 OOMOL 时使用 OOMOL；未安装但 Agent 自带图片工具时直接使用原生工具；两者都没有时再引导安装 OOMOL。请重点遵循其中的穆夏风艺术指导，保留我提供的人物或宠物特征，并展示最终图片，而不是只报一个本地路径。
 ```
 
 面向 Agent 的运行步骤、参考图处理、任务恢复、交付检查和失败处理请阅读 [SKILL.md](SKILL.md)。

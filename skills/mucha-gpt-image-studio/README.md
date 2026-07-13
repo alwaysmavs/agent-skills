@@ -6,12 +6,11 @@
 
 **Turn an idea—or a beloved photo—into a graceful Art Nouveau artwork inspired by Alphonse Mucha.**
 
-`mucha-gpt-image-studio` is an Agent Skill for creating polished GPT Image 2
-artwork: floral profile portraits, pet posters, invitation art, menu frames,
-social backgrounds, wallpapers, and other decorative visuals. It keeps the
-art-direction decisions in one focused skill while delegating generation,
-editing, upload, recovery, and artifact download to the companion
-`gpt-image-2` skill.
+`mucha-gpt-image-studio` is an Agent Skill for creating polished artwork:
+floral profile portraits, pet posters, invitation art, menu frames, social
+backgrounds, wallpapers, and other decorative visuals. Its main job is art
+direction. It can execute through an agent's native image tool or through
+OOMOL's resumable GPT Image 2 workflow.
 
 ## See the visual directions
 
@@ -77,20 +76,21 @@ The skill uses named creative directions such as `mucha-pet-poster`,
 `mucha-social-background`, and `mucha-seasonal-card` so each output is composed
 for its job rather than using one generic “Mucha style” prompt.
 
-### 4. Produces deliverable images instead of only a prompt
+### 4. Uses the image runtime already available
 
-The companion runner stores a resumable session file, waits and polls the same
-generation task, downloads its result, and returns local output paths and
-remote URLs. If interrupted, it resumes the saved session instead of creating a
-duplicate paid generation task.
+If OOMOL is installed, the skill uses the resumable GPT Image 2 runner. If it
+is not installed but the agent already has a native image generation or editing
+tool, it uses that tool directly and does not add an unnecessary dependency.
+Only an environment with neither capability needs guided OOMOL setup.
 
-## Requirements
+## Execution paths
 
-- An authenticated [oo CLI](https://oomol.com) with Fusion API access.
-- The `gpt-image-2` companion skill installed in the active agent's skills
-  directory. It supplies the deterministic runner used by this art-direction
-  skill for GPT Image 2 generation and editing.
-- Network access for image generation and artifact download.
+- **OOMOL available:** use the authenticated `oo` CLI and the `gpt-image-2`
+  companion for upload, generation, polling, recovery, and download.
+- **OOMOL absent, native image tool available:** generate or edit through the
+  host tool without installing OOMOL.
+- **Neither available:** the agent explains the missing capability and offers
+  the official OOMOL setup while retaining the original creative brief.
 
 No API key should be copied into the skill or committed to a repository.
 
@@ -99,7 +99,7 @@ No API key should be copied into the skill or committed to a repository.
 Copy this request to your agent:
 
 ```text
-Install the mucha-gpt-image-studio skill from https://github.com/alwaysmavs/agent-skills into my active skills directory. Also confirm that the gpt-image-2 companion skill is installed and that an authenticated oo CLI can access Fusion API image generation. Follow SKILL.md, preserve a supplied person or pet photo when I provide one, save generated artifacts outside unrelated repositories, and show me the final image rather than only a local path.
+Install the mucha-gpt-image-studio skill from https://github.com/alwaysmavs/agent-skills into my active skills directory. Follow SKILL.md and choose the available runtime: use OOMOL when it is already installed, otherwise use the agent's native image tool when possible, and guide OOMOL setup only if neither is available. Preserve a supplied person or pet photo, apply the Mucha-specific art direction, and show me the final image rather than only a local path.
 ```
 
 The agent-facing runtime instructions, source-image handling, session recovery,
